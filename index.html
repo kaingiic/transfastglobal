@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TransFastGlobal — Shipping, Tracking & Delivery</title>
+<script>
+  /* Apply saved theme before paint to avoid flash */
+  (function(){
+    var t = localStorage.getItem('tfg-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+<style>
+  :root{
+    --purple:#4d148c;
+    --purple-light:#6b1fb8;
+    --orange:#ff6600;
+    --orange-light:#ff8533;
+    --radius:14px;
+    --shadow:0 10px 40px rgba(0,0,0,.45);
+  }
+  /* ---- Dark theme (default) ---- */
+  :root[data-theme="dark"]{
+    --bg:#0d0d12;
+    --bg-2:#15151f;
+    --bg-3:#1c1c2a;
+    --card:#191925;
+    --border:#2a2a3a;
+    --text:#f2f2f7;
+    --text-dim:#a0a0b4;
+    --header-bg:rgba(13,13,18,.9);
+    --shadow:0 10px 40px rgba(0,0,0,.45);
+  }
+  /* ---- Light theme ---- */
+  :root[data-theme="light"]{
+    --bg:#f4f4f8;
+    --bg-2:#ffffff;
+    --bg-3:#eef0f4;
+    --card:#ffffff;
+    --border:#e2e2ea;
+    --text:#16161f;
+    --text-dim:#5c5c72;
+    --header-bg:rgba(255,255,255,.9);
+    --shadow:0 10px 40px rgba(90,90,120,.15);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    transition:background .3s,color .3s;
+  }
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    background:var(--bg-2);
+    border-bottom:1px solid var(--border);
+    font-size:13px;
+    color:var(--text-dim);
+  }
+  .topbar .container{display:flex;justify-content:flex-end;gap:22px;height:38px;align-items:center}
+  .topbar a:hover{color:var(--orange)}
+
+  /* ---------- Header / nav ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:var(--header-bg);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    transition:background .3s;
+  }
+  .nav{display:flex;align-items:center;gap:32px;height:72px}
+  .logo{display:flex;align-items:baseline;font-weight:800;font-size:25px;letter-spacing:-1px;white-space:nowrap}
+  .logo .a{color:var(--text)}
+  .logo .b{color:var(--orange)}
+  nav.main{display:flex;gap:26px;font-weight:600;font-size:15px;flex:1}
+  nav.main a{color:var(--text-dim);padding:6px 0;position:relative;transition:color .2s}
+  nav.main a:hover{color:var(--text)}
+  nav.main a::after{
+    content:"";position:absolute;left:0;bottom:-4px;height:2px;width:0;
+    background:var(--orange);transition:width .2s;
+  }
+  nav.main a:hover::after{width:100%}
+  .nav-actions{display:flex;gap:12px;align-items:center}
+  .btn{
+    border:none;cursor:pointer;font-weight:700;font-size:14px;
+    padding:11px 20px;border-radius:8px;transition:transform .15s,filter .2s;
+  }
+  .btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+  .btn-orange{background:var(--orange);color:#111}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+  .theme-toggle{
+    width:42px;height:42px;border-radius:10px;border:1px solid var(--border);
+    background:var(--bg-3);color:var(--text);font-size:19px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:transform .15s,background .3s;
+  }
+  .theme-toggle:hover{transform:translateY(-1px)}
+  .menu-toggle{display:none;background:none;border:none;color:var(--text);font-size:26px;cursor:pointer}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    min-height:560px;
+    display:flex;align-items:center;
+    background:
+      linear-gradient(115deg, rgba(77,20,140,.92) 0%, rgba(30,10,60,.75) 45%, rgba(13,13,18,.55) 100%),
+      url('https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+  }
+  .hero-inner{max-width:640px;padding:60px 0}
+  .hero h1{font-size:52px;line-height:1.05;font-weight:800;letter-spacing:-1.5px;margin-bottom:18px;color:#fff}
+  .hero h1 span{color:var(--orange)}
+  .hero p{font-size:19px;color:#e6e0f0;margin-bottom:30px;max-width:520px}
+
+  /* ---------- Tracking card ---------- */
+  .track-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:26px;
+    box-shadow:var(--shadow);
+    max-width:560px;
+  }
+  .track-card h3{font-size:18px;margin-bottom:14px;display:flex;align-items:center;gap:10px;color:var(--text)}
+  .track-row{display:flex;gap:10px}
+  .track-row input{
+    flex:1;background:var(--bg-3);border:1px solid var(--border);color:var(--text);
+    padding:14px 16px;border-radius:8px;font-size:15px;outline:none;transition:border .2s;
+  }
+  .track-row input:focus{border-color:var(--orange)}
+  .track-hint{margin-top:10px;font-size:12.5px;color:var(--text-dim)}
+
+  /* ---------- Section ---------- */
+  section{padding:78px 0}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 48px}
+  .section-head .kicker{color:var(--orange);font-weight:700;letter-spacing:2px;font-size:13px;text-transform:uppercase}
+  .section-head h2{font-size:38px;font-weight:800;letter-spacing:-1px;margin:10px 0 12px}
+  .section-head p{color:var(--text-dim);font-size:17px}
+
+  /* ---------- Services grid ---------- */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    overflow:hidden;transition:transform .2s,border-color .2s;
+  }
+  .card:hover{transform:translateY(-6px);border-color:var(--orange)}
+  .card .thumb{height:180px;background-size:cover;background-position:center}
+  .card .body{padding:22px}
+  .card .body h4{font-size:19px;margin-bottom:8px}
+  .card .body p{color:var(--text-dim);font-size:14.5px;margin-bottom:14px}
+  .card .body a{color:var(--orange);font-weight:700;font-size:14px}
+  .card .body a:hover{text-decoration:underline}
+
+  /* ---------- Map section ---------- */
+  .map-wrap{
+    display:grid;grid-template-columns:1.1fr 1fr;gap:0;
+    border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
+    box-shadow:var(--shadow);background:var(--card);
+  }
+  .map-frame{position:relative;min-height:460px;background:var(--bg-3)}
+  #gmap{position:absolute;inset:0;width:100%;height:100%}
+  .map-fallback{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:30px;color:var(--text-dim);gap:8px;
+  }
+  .map-fallback strong{color:var(--text);font-size:16px}
+  .map-fallback code{background:var(--bg-2);border:1px solid var(--border);padding:2px 7px;border-radius:5px;color:var(--orange);font-size:13px}
+  .map-side{padding:40px}
+  .map-side h2{font-size:30px;font-weight:800;letter-spacing:-.5px;margin-bottom:14px}
+  .map-side p{color:var(--text-dim);margin-bottom:22px}
+  .locate-row{display:flex;gap:10px;margin-bottom:26px}
+  .locate-row input{
+    flex:1;background:var(--bg-3);border:1px solid var(--border);color:var(--text);
+    padding:13px 15px;border-radius:8px;outline:none;
+  }
+  .stat-row{display:flex;gap:14px}
+  .stat{flex:1;background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+  .stat .n{font-size:26px;font-weight:800;color:var(--orange)}
+  .stat .l{font-size:12.5px;color:var(--text-dim);margin-top:2px}
+
+  /* ---------- Steps ---------- */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .step{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:26px;text-align:center}
+  .step .ico{width:56px;height:56px;margin:0 auto 16px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;background:linear-gradient(135deg,var(--purple),var(--purple-light))}
+  .step h4{margin-bottom:8px}
+  .step p{color:var(--text-dim);font-size:14px}
+
+  /* ---------- CTA ---------- */
+  .cta{
+    background:linear-gradient(115deg,var(--purple),var(--purple-light));
+    border-radius:var(--radius);padding:56px;text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .cta h2{font-size:34px;font-weight:800;margin-bottom:12px;color:#fff}
+  .cta p{color:#e6e0f0;margin-bottom:26px;font-size:17px}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--bg-2);border-top:1px solid var(--border);padding:56px 0 30px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px;margin-bottom:40px}
+  .foot-grid h5{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:16px}
+  .foot-grid ul{list-style:none}
+  .foot-grid li{margin-bottom:10px}
+  .foot-grid a{color:var(--text-dim);font-size:14.5px}
+  .foot-grid a:hover{color:var(--orange)}
+  .foot-bottom{border-top:1px solid var(--border);padding-top:22px;display:flex;justify-content:space-between;color:var(--text-dim);font-size:13px;flex-wrap:wrap;gap:10px}
+
+  /* ---------- Tracking modal ---------- */
+  .modal-back{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .modal-back.open{display:flex}
+  .modal{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);max-width:560px;width:100%;box-shadow:var(--shadow);overflow:hidden}
+  .modal-head{background:linear-gradient(115deg,var(--purple),var(--purple-light));padding:24px 26px;display:flex;justify-content:space-between;align-items:center}
+  .modal-head h3{font-size:20px;color:#fff}
+  .modal-head .close{background:none;border:none;color:#fff;font-size:26px;cursor:pointer;line-height:1}
+  .modal-body{padding:26px}
+  .badge{display:inline-block;background:rgba(255,102,0,.15);color:var(--orange);padding:5px 12px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:18px}
+  .timeline{position:relative;margin-left:8px}
+  .timeline .tl-item{position:relative;padding:0 0 24px 28px;border-left:2px solid var(--border)}
+  .timeline .tl-item:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline .tl-item::before{content:"";position:absolute;left:-8px;top:2px;width:14px;height:14px;border-radius:50%;background:var(--border)}
+  .timeline .tl-item.done::before{background:var(--orange);box-shadow:0 0 0 4px rgba(255,102,0,.18)}
+  .tl-item .t{font-weight:700;font-size:15px}
+  .tl-item .s{color:var(--text-dim);font-size:13px}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:900px){
+    .grid,.steps{grid-template-columns:1fr 1fr}
+    .map-wrap{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    nav.main{display:none}
+    .menu-toggle{display:block}
+    .hero h1{font-size:38px}
+  }
+  @media(max-width:560px){
+    .grid,.steps,.foot-grid{grid-template-columns:1fr}
+    .track-row{flex-direction:column}
+    .hero h1{font-size:32px}
+    .stat-row{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="container">
+      <a href="#">Support</a>
+      <a href="#">Locations</a>
+      <a href="#">English ▾</a>
+      <a href="#">Sign Up / Log In</a>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="logo"><span class="a">TransFast</span><span class="b">Global</span></div>
+      <nav class="main">
+        <a href="#track">Track</a>
+        <a href="#services">Ship</a>
+        <a href="#map">Locations</a>
+        <a href="#how">Support</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" title="Toggle dark / light mode" onclick="toggleTheme()">🌙</button>
+        <button class="btn btn-ghost" onclick="scrollTo({top:0,behavior:'smooth'})">Sign In</button>
+        <button class="btn btn-orange" onclick="document.getElementById('track').scrollIntoView({behavior:'smooth'})">Ship Now</button>
+      </div>
+      <button class="menu-toggle">☰</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" style="padding:0" id="track">
+    <div class="container hero-inner">
+      <h1>Fast, reliable <span>delivery</span><br>everywhere you ship.</h1>
+      <p>Track packages in real time, find drop-off locations, and get your shipment where it needs to be — on time, every time.</p>
+
+      <div class="track-card">
+        <h3>📦 Track your shipment</h3>
+        <div class="track-row">
+          <input id="trackInput" type="text" placeholder="Enter tracking number (e.g. 7712 8834 2290)" />
+          <button class="btn btn-orange" onclick="track()">Track</button>
+        </div>
+        <div class="track-hint">Try any number — this demo returns a sample tracking timeline.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Our Services</div>
+        <h2>Ship anything, anywhere</h2>
+        <p>From overnight envelopes to freight pallets, choose the delivery speed that fits your needs.</p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80')"></div>
+          <div class="body">
+            <h4>Overnight Express</h4>
+            <p>Guaranteed next-business-day delivery by 10:30 AM to most cities across the country.</p>
+            <a href="#">Get a rate →</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=800&q=80')"></div>
+          <div class="body">
+            <h4>Ground Shipping</h4>
+            <p>Cost-effective delivery in 1–5 business days with full tracking and door-to-door service.</p>
+            <a href="#">Get a rate →</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=800&q=80')"></div>
+          <div class="body">
+            <h4>International Air</h4>
+            <p>Customs-cleared express shipping to 220+ countries and territories worldwide.</p>
+            <a href="#">Get a rate →</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80')"></div>
+          <div class="body">
+            <h4>Freight & Pallets</h4>
+            <p>Heavy and oversized freight moved safely with priority and economy options.</p>
+            <a href="#">Get a rate →</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=800&q=80')"></div>
+          <div class="body">
+            <h4>Same-Day Courier</h4>
+            <p>Urgent local deliveries picked up and dropped off within hours across the metro.</p>
+            <a href="#">Get a rate →</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1580674285054-bed31e145f59?auto=format&fit=crop&w=800&q=80')"></div>
+          <div class="body">
+            <h4>Business Solutions</h4>
+            <p>Bulk shipping, warehousing, and fulfillment tools built for growing companies.</p>
+            <a href="#">Get a rate →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section id="map" style="background:var(--bg-2)">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Find Us</div>
+        <h2>Drop-off locations near you</h2>
+        <p>Thousands of staffed stores, lockers, and drop boxes — open the map to find the closest one.</p>
+      </div>
+      <div class="map-wrap">
+        <div class="map-frame">
+          <div id="gmap"></div>
+          <div class="map-fallback" id="mapFallback">
+            <strong>🗺️ Google Map goes here</strong>
+            <div>Add your API key in the script tag to activate the live map:</div>
+            <code>key=YOUR_GOOGLE_MAPS_API_KEY</code>
+          </div>
+        </div>
+        <div class="map-side">
+          <h2>Ship &amp; pick up nearby</h2>
+          <p>Enter a city or ZIP code to see the closest TransFastGlobal locations, hours, and available services.</p>
+          <div class="locate-row">
+            <input type="text" placeholder="City or ZIP code" />
+            <button class="btn btn-orange">Search</button>
+          </div>
+          <div class="stat-row">
+            <div class="stat"><div class="n">62K+</div><div class="l">Locations</div></div>
+            <div class="stat"><div class="n">220</div><div class="l">Countries</div></div>
+            <div class="stat"><div class="n">24/7</div><div class="l">Drop boxes</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">How It Works</div>
+        <h2>Shipping in four simple steps</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="ico">📝</div><h4>1. Create label</h4><p>Enter package details and print your shipping label in seconds.</p></div>
+        <div class="step"><div class="ico">📍</div><h4>2. Drop off</h4><p>Leave it at any TransFastGlobal location or schedule a pickup.</p></div>
+        <div class="step"><div class="ico">🚚</div><h4>3. In transit</h4><p>Follow every scan with live tracking and alerts.</p></div>
+        <div class="step"><div class="ico">✅</div><h4>4. Delivered</h4><p>Get proof of delivery the moment it arrives.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="container">
+      <div class="cta">
+        <h2>Ready to ship?</h2>
+        <p>Create an account and get discounted rates on your first 10 shipments.</p>
+        <button class="btn btn-orange" style="padding:14px 34px;font-size:16px">Create free account</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="foot-grid">
+        <div>
+          <div class="logo" style="font-size:22px;margin-bottom:12px"><span class="a">TransFast</span><span class="b">Global</span></div>
+          <p style="color:var(--text-dim);font-size:14px;max-width:280px">The demo shipping platform — fast delivery, real-time tracking, worldwide reach.</p>
+        </div>
+        <div>
+          <h5>Ship</h5>
+          <ul><li><a href="#">Get rates</a></li><li><a href="#">Create label</a></li><li><a href="#">Schedule pickup</a></li><li><a href="#">Packaging</a></li></ul>
+        </div>
+        <div>
+          <h5>Track</h5>
+          <ul><li><a href="#">Track by number</a></li><li><a href="#">Delivery manager</a></li><li><a href="#">Claims</a></li><li><a href="#">Alerts</a></li></ul>
+        </div>
+        <div>
+          <h5>Company</h5>
+          <ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Newsroom</a></li><li><a href="#">Contact</a></li></ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <div>© 2026 TransFastGlobal Demo. A design mockup — not affiliated with any real carrier.</div>
+        <div>Privacy · Terms · Cookies</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Tracking modal -->
+  <div class="modal-back" id="modal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>Tracking <span id="trackNum">#0000</span></h3>
+        <button class="close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <span class="badge">● In Transit — Est. delivery Jul 21</span>
+        <div class="timeline">
+          <div class="tl-item done"><div class="t">Out for delivery</div><div class="s">Jul 19, 7:42 AM · Local facility</div></div>
+          <div class="tl-item done"><div class="t">Arrived at destination hub</div><div class="s">Jul 19, 4:15 AM · Memphis, TN</div></div>
+          <div class="tl-item done"><div class="t">Departed sort facility</div><div class="s">Jul 18, 9:30 PM · Indianapolis, IN</div></div>
+          <div class="tl-item done"><div class="t">Picked up</div><div class="s">Jul 18, 2:10 PM · Chicago, IL</div></div>
+          <div class="tl-item"><div class="t">Label created</div><div class="s">Jul 18, 11:02 AM · Shipper</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  /* ---------- Theme toggle ---------- */
+  function currentTheme(){ return document.documentElement.getAttribute('data-theme'); }
+  function syncToggleIcon(){
+    document.getElementById('themeToggle').textContent = currentTheme()==='dark' ? '🌙' : '☀️';
+  }
+  function toggleTheme(){
+    var next = currentTheme()==='dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('tfg-theme', next);
+    syncToggleIcon();
+    if(window.gmap){ window.gmap.setOptions({styles: next==='dark' ? DARK_MAP_STYLE : []}); }
+  }
+  syncToggleIcon();
+
+  /* ---------- Tracking ---------- */
+  function track(){
+    var v = document.getElementById('trackInput').value.trim() || '7712 8834 2290';
+    document.getElementById('trackNum').textContent = '#'+v;
+    document.getElementById('modal').classList.add('open');
+  }
+  function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+  document.getElementById('modal').addEventListener('click',function(e){
+    if(e.target===this) closeModal();
+  });
+  document.getElementById('trackInput').addEventListener('keydown',function(e){
+    if(e.key==='Enter') track();
+  });
+
+  /* ---------- Google Maps ---------- */
+  // Dark map style (applied automatically in dark mode)
+  var DARK_MAP_STYLE = [
+    {elementType:'geometry',stylers:[{color:'#1c1c2a'}]},
+    {elementType:'labels.text.stroke',stylers:[{color:'#0d0d12'}]},
+    {elementType:'labels.text.fill',stylers:[{color:'#a0a0b4'}]},
+    {featureType:'road',elementType:'geometry',stylers:[{color:'#2a2a3a'}]},
+    {featureType:'road',elementType:'labels.text.fill',stylers:[{color:'#c9c9d6'}]},
+    {featureType:'water',elementType:'geometry',stylers:[{color:'#12121a'}]},
+    {featureType:'poi',elementType:'geometry',stylers:[{color:'#232333'}]},
+    {featureType:'poi.park',elementType:'geometry',stylers:[{color:'#1a2a1a'}]},
+    {featureType:'transit',elementType:'geometry',stylers:[{color:'#2a2a3a'}]},
+    {featureType:'administrative',elementType:'geometry',stylers:[{color:'#4d148c'}]}
+  ];
+
+  // Called by the Google Maps script once it loads with a valid API key.
+  function initMap(){
+    var center = {lat:41.8781, lng:-87.6298}; // Chicago — change to your city
+    document.getElementById('mapFallback').style.display = 'none';
+    window.gmap = new google.maps.Map(document.getElementById('gmap'), {
+      center: center,
+      zoom: 12,
+      styles: currentTheme()==='dark' ? DARK_MAP_STYLE : [],
+      mapTypeControl:false,
+      streetViewControl:false
+    });
+    new google.maps.Marker({position:center, map:window.gmap, title:'TransFastGlobal'});
+  }
+  // If the API key is missing/invalid, keep showing the fallback message.
+  window.gm_authFailure = function(){
+    document.getElementById('mapFallback').style.display='flex';
+  };
+</script>
+
+<!--
+  ▼▼▼  ACTIVATE THE LIVE GOOGLE MAP  ▼▼▼
+  1. Get a free key: https://console.cloud.google.com/  →  APIs & Services  →  Credentials  →  Create API key
+  2. Enable the "Maps JavaScript API" for your project.
+  3. Replace YOUR_GOOGLE_MAPS_API_KEY below with your key, then remove the surrounding comment marks.
+
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap">
+  </script>
+-->
+
+</body>
+</html>
