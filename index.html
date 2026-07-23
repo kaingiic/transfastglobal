@@ -163,13 +163,9 @@
     box-shadow:var(--shadow);background:var(--card);
   }
   .map-frame{position:relative;min-height:460px;background:var(--bg-3)}
-  #gmap{position:absolute;inset:0;width:100%;height:100%}
-  .map-fallback{
-    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:30px;color:var(--text-dim);gap:8px;
-  }
-  .map-fallback strong{color:var(--text);font-size:16px}
-  .map-fallback code{background:var(--bg-2);border:1px solid var(--border);padding:2px 7px;border-radius:5px;color:var(--orange);font-size:13px}
+  .map-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  /* Dark-mode the map by inverting it; light mode shows it normally */
+  :root[data-theme="dark"] .map-frame iframe{filter:invert(92%) hue-rotate(180deg) brightness(.95) contrast(.9)}
   .map-side{padding:40px}
   .map-side h2{font-size:30px;font-weight:800;letter-spacing:-.5px;margin-bottom:14px}
   .map-side p{color:var(--text-dim);margin-bottom:22px}
@@ -362,12 +358,14 @@
       </div>
       <div class="map-wrap">
         <div class="map-frame">
-          <div id="gmap"></div>
-          <div class="map-fallback" id="mapFallback">
-            <strong>🗺️ Google Map goes here</strong>
-            <div>Add your API key in the script tag to activate the live map:</div>
-            <code>key=YOUR_GOOGLE_MAPS_API_KEY</code>
-          </div>
+          <iframe
+            id="gmapFrame"
+            title="TransFastGlobal drop-off locations"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=Chicago,IL&z=12&output=embed">
+          </iframe>
         </div>
         <div class="map-side">
           <h2>Ship &amp; pick up nearby</h2>
@@ -472,7 +470,6 @@
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('tfg-theme', next);
     syncToggleIcon();
-    if(window.gmap){ window.gmap.setOptions({styles: next==='dark' ? DARK_MAP_STYLE : []}); }
   }
   syncToggleIcon();
 
@@ -490,43 +487,14 @@
     if(e.key==='Enter') track();
   });
 
-  /* ---------- Google Maps ---------- */
-  // Dark map style (applied automatically in dark mode)
-  var DARK_MAP_STYLE = [
-    {elementType:'geometry',stylers:[{color:'#1c1c2a'}]},
-    {elementType:'labels.text.stroke',stylers:[{color:'#0d0d12'}]},
-    {elementType:'labels.text.fill',stylers:[{color:'#a0a0b4'}]},
-    {featureType:'road',elementType:'geometry',stylers:[{color:'#2a2a3a'}]},
-    {featureType:'road',elementType:'labels.text.fill',stylers:[{color:'#c9c9d6'}]},
-    {featureType:'water',elementType:'geometry',stylers:[{color:'#12121a'}]},
-    {featureType:'poi',elementType:'geometry',stylers:[{color:'#232333'}]},
-    {featureType:'poi.park',elementType:'geometry',stylers:[{color:'#1a2a1a'}]},
-    {featureType:'transit',elementType:'geometry',stylers:[{color:'#2a2a3a'}]},
-    {featureType:'administrative',elementType:'geometry',stylers:[{color:'#4d148c'}]}
-  ];
-
-  // Called by the Google Maps script once it loads with a valid API key.
-  function initMap(){
-    var center = {lat:41.8781, lng:-87.6298}; // Chicago — change to your city
-    document.getElementById('mapFallback').style.display = 'none';
-    window.gmap = new google.maps.Map(document.getElementById('gmap'), {
-      center: center,
-      zoom: 12,
-      styles: currentTheme()==='dark' ? DARK_MAP_STYLE : [],
-      mapTypeControl:false,
-      streetViewControl:false
-    });
-    new google.maps.Marker({position:center, map:window.gmap, title:'TransFastGlobal'});
-  }
-  // If the API key is missing/invalid, keep showing the fallback message.
-  window.gm_authFailure = function(){
-    document.getElementById('mapFallback').style.display='flex';
-  };
-</script>
-
-<!-- Live Google Map (Maps JavaScript API) -->
-<script async
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAg0bu1fmP3w7pEBbB-AYrBKuiGo-lvb0&callback=initMap">
+  /* ---------- Locations map ---------- */
+  // The map is a keyless Google Maps embed (see the <iframe> in the Locations
+  // section). It needs no API key or billing, so it always loads. To change the
+  // location, edit the ?q= value in that iframe's src (e.g. q=New+York,NY).
+  //
+  // OPTIONAL: to use the styled Maps JavaScript API with your own key instead,
+  // enable BILLING on your Google Cloud project (Maps JS API requires it), then
+  // swap the iframe back for a <div id="gmap"> + the maps.googleapis.com script.
 </script>
 
 </body>
