@@ -34,7 +34,22 @@
   .btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
   .btn-orange{background:var(--orange);color:#111}
   .theme-toggle{width:42px;height:42px;border-radius:10px;border:1px solid var(--border);background:var(--bg-3);color:var(--text);font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-  @media(max-width:760px){nav.main{display:none}}
+  .menu-toggle{display:none;background:none;border:0;color:var(--text);font-size:26px;cursor:pointer}
+  body{overflow-x:hidden}
+  .card{min-width:0}
+  @media(max-width:760px){
+    .nav{justify-content:space-between;gap:14px}
+    .menu-toggle{display:block}
+    .nav-actions .btn{display:none}
+    nav.main{
+      display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;flex:none;
+      background:var(--header-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+      padding:6px 24px 14px;box-shadow:0 12px 30px rgba(0,0,0,.25);
+    }
+    header.menu-open nav.main{display:flex}
+    nav.main a{padding:14px 2px;font-size:16px;border-bottom:1px solid var(--border)}
+    nav.main a.active::after{display:none}
+  }
 
   /* hero */
   .page-hero{background:linear-gradient(115deg,var(--purple),var(--purple-light));padding:56px 0;color:#fff}
@@ -101,6 +116,7 @@
         <button class="theme-toggle" id="themeToggle" title="Toggle dark / light mode" onclick="toggleTheme()">🌙</button>
         <a href="index.html#track" class="btn btn-orange">Track a package</a>
       </div>
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu">☰</button>
     </div>
   </header>
 
@@ -176,6 +192,8 @@
 <script>
   function currentTheme(){ return document.documentElement.getAttribute('data-theme'); }
   function syncToggleIcon(){ document.getElementById('themeToggle').textContent = currentTheme()==='dark' ? '🌙' : '☀️'; }
+  function toggleMenu(){ document.querySelector('header').classList.toggle('menu-open'); }
+  document.querySelectorAll('nav.main a').forEach(function(a){ a.addEventListener('click', function(){ document.querySelector('header').classList.remove('menu-open'); }); });
   function toggleTheme(){
     var next = currentTheme()==='dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);

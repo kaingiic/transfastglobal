@@ -52,6 +52,15 @@
   code{background:var(--bg2);border:1px solid var(--b);padding:2px 6px;border-radius:5px;color:var(--orange);font-size:13px}
   ol{margin:10px 0 0 20px;font-size:13.5px;color:var(--d)}
   ol li{margin:6px 0}
+  body{overflow-x:hidden}
+  @media(max-width:560px){
+    .wrap{padding:18px 14px 70px}
+    .card{padding:18px}
+    .grid2{grid-template-columns:1fr}
+    .center{margin-top:4vh}
+    table th:nth-child(3),table td:nth-child(3){display:none}
+    .row-actions{flex-wrap:wrap}
+  }
 </style>
 </head>
 <body>
