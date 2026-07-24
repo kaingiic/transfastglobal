@@ -269,20 +269,52 @@
   .tl-item .t{font-weight:700;font-size:15px}
   .tl-item .s{color:var(--text-dim);font-size:13px}
 
+  /* Prevent grid/flex children from forcing horizontal overflow */
+  body{overflow-x:hidden}
+  .map-frame,.map-side,.card,.review,.step,.stat{min-width:0}
+
   /* ---------- Responsive ---------- */
   @media(max-width:900px){
     .grid,.steps,.reviews-grid{grid-template-columns:1fr 1fr}
     .map-wrap{grid-template-columns:1fr}
     .foot-grid{grid-template-columns:1fr 1fr}
-    nav.main{display:none}
     .menu-toggle{display:block}
-    .hero h1{font-size:38px}
+    .hero h1{font-size:36px}
+    /* Collapse header into a working hamburger menu */
+    .nav{gap:14px;justify-content:space-between}
+    .nav-actions .btn{display:none}
+    nav.main{
+      display:none;position:absolute;top:100%;left:0;right:0;
+      flex-direction:column;gap:0;
+      background:var(--header-bg);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);padding:6px 24px 14px;
+      box-shadow:0 12px 30px rgba(0,0,0,.25);
+    }
+    header.menu-open nav.main{display:flex}
+    nav.main a{padding:14px 2px;font-size:16px;border-bottom:1px solid var(--border)}
+    nav.main a::after{display:none}
   }
   @media(max-width:560px){
+    .container{padding:0 18px}
+    section{padding:52px 0}
     .grid,.steps,.foot-grid,.reviews-grid{grid-template-columns:1fr}
     .track-row{flex-direction:column}
-    .hero h1{font-size:32px}
+    .hero{min-height:auto}
+    .hero-inner{padding:44px 0}
+    .hero h1{font-size:30px}
+    .hero p{font-size:17px}
+    .section-head h2{font-size:27px}
     .stat-row{flex-direction:column}
+    .map-side{padding:26px}
+    .cta{padding:40px 22px}
+    .cta h2{font-size:28px}
+    .topbar .container{gap:14px;flex-wrap:wrap;justify-content:center;height:auto;padding:8px 18px}
+    .modal-body{padding:20px}
+    .parties{grid-template-columns:1fr}
+    .party.arrow{display:none}
+    .chat-panel{width:calc(100vw - 36px)}
+    .chat-widget{bottom:16px;right:16px}
+    [dir="rtl"] .chat-widget{left:16px}
   }
 
   /* ---------- Live chat widget ---------- */
@@ -351,7 +383,7 @@
         <button class="btn btn-ghost" data-i18n="btn_signin" onclick="scrollTo({top:0,behavior:'smooth'})">Sign In</button>
         <button class="btn btn-orange" data-i18n="btn_shipnow" onclick="document.getElementById('track').scrollIntoView({behavior:'smooth'})">Ship Now</button>
       </div>
-      <button class="menu-toggle">☰</button>
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu">☰</button>
     </div>
   </header>
 
@@ -870,6 +902,12 @@
     }
   })();
   function toggleChat(){ document.querySelector('.chat-widget').classList.toggle('open'); }
+
+  /* ---------- Mobile menu ---------- */
+  function toggleMenu(){ document.querySelector('header').classList.toggle('menu-open'); }
+  document.querySelectorAll('nav.main a').forEach(function(a){
+    a.addEventListener('click', function(){ document.querySelector('header').classList.remove('menu-open'); });
+  });
 
   /* ---------- Tracking ---------- */
   // Shipment data lives in shipments.json (in the repo). Add or edit shipments
