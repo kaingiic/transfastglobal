@@ -67,6 +67,17 @@
   }
   .topbar .container{display:flex;justify-content:flex-end;gap:22px;height:38px;align-items:center}
   .topbar a:hover{color:var(--orange)}
+  .lang-select{background:transparent;border:1px solid var(--border);color:var(--text-dim);font-size:12.5px;padding:3px 6px;border-radius:6px;cursor:pointer;font-family:inherit}
+  .lang-select:focus{outline:none;border-color:var(--orange)}
+  .lang-select option{background:var(--bg-2);color:var(--text)}
+  /* Right-to-left (Arabic) */
+  [dir="rtl"] .topbar .container{justify-content:flex-start}
+  [dir="rtl"] nav.main a::after{left:auto;right:0}
+  [dir="rtl"] .timeline{margin-left:0;margin-right:8px}
+  [dir="rtl"] .timeline .tl-item{padding:0 28px 24px 0;border-left:0;border-right:2px solid var(--border)}
+  [dir="rtl"] .timeline .tl-item:last-child{border-right-color:transparent}
+  [dir="rtl"] .timeline .tl-item::before{left:auto;right:-8px}
+  [dir="rtl"] .party.arrow{transform:scaleX(-1)}
 
   /* ---------- Header / nav ---------- */
   header{
@@ -266,10 +277,16 @@
   <!-- Top bar -->
   <div class="topbar">
     <div class="container">
-      <a href="#">Support</a>
-      <a href="#">Locations</a>
-      <a href="#">English ▾</a>
-      <a href="#">Sign Up / Log In</a>
+      <a href="#" data-i18n="t_support">Support</a>
+      <a href="#" data-i18n="t_locations">Locations</a>
+      <select id="langSelect" class="lang-select" onchange="applyLang(this.value)" aria-label="Language">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="ar">العربية</option>
+        <option value="zh">中文</option>
+      </select>
+      <a href="#" data-i18n="t_signup">Sign Up / Log In</a>
     </div>
   </div>
 
@@ -287,15 +304,15 @@
         <span class="a">TransFast</span><span class="b">Global</span>
       </div>
       <nav class="main">
-        <a href="#track">Track</a>
-        <a href="#services">Ship</a>
-        <a href="#map">Locations</a>
-        <a href="contact.html">Contact</a>
+        <a href="#track" data-i18n="nav_track">Track</a>
+        <a href="#services" data-i18n="nav_ship">Ship</a>
+        <a href="#map" data-i18n="nav_locations">Locations</a>
+        <a href="contact.html" data-i18n="nav_contact">Contact</a>
       </nav>
       <div class="nav-actions">
         <button class="theme-toggle" id="themeToggle" title="Toggle dark / light mode" onclick="toggleTheme()">🌙</button>
-        <button class="btn btn-ghost" onclick="scrollTo({top:0,behavior:'smooth'})">Sign In</button>
-        <button class="btn btn-orange" onclick="document.getElementById('track').scrollIntoView({behavior:'smooth'})">Ship Now</button>
+        <button class="btn btn-ghost" data-i18n="btn_signin" onclick="scrollTo({top:0,behavior:'smooth'})">Sign In</button>
+        <button class="btn btn-orange" data-i18n="btn_shipnow" onclick="document.getElementById('track').scrollIntoView({behavior:'smooth'})">Ship Now</button>
       </div>
       <button class="menu-toggle">☰</button>
     </div>
@@ -304,16 +321,16 @@
   <!-- Hero -->
   <section class="hero" style="padding:0" id="track">
     <div class="container hero-inner">
-      <h1>Fast, reliable <span>delivery</span><br>everywhere you ship.</h1>
-      <p>Track packages in real time, find drop-off locations, and get your shipment where it needs to be — on time, every time.</p>
+      <h1 data-i18n-html="heroTitle">Fast, reliable <span>delivery</span><br>everywhere you ship.</h1>
+      <p data-i18n="heroSub">Track packages in real time, find drop-off locations, and get your shipment where it needs to be — on time, every time.</p>
 
       <div class="track-card">
-        <h3>📦 Track your shipment</h3>
+        <h3 data-i18n="trackTitle">📦 Track your shipment</h3>
         <div class="track-row">
-          <input id="trackInput" type="text" placeholder="Enter tracking number (e.g. TFG100001)" />
-          <button class="btn btn-orange" onclick="track()">Track</button>
+          <input id="trackInput" type="text" data-i18n-ph="trackPh" placeholder="Enter tracking number (e.g. TFG100001)" />
+          <button class="btn btn-orange" data-i18n="trackBtn" onclick="track()">Track</button>
         </div>
-        <div class="track-hint">Enter your tracking number to see the latest delivery status.</div>
+        <div class="track-hint" data-i18n="trackHint">Enter your tracking number to see the latest delivery status.</div>
       </div>
     </div>
   </section>
@@ -322,57 +339,57 @@
   <section id="services">
     <div class="container">
       <div class="section-head">
-        <div class="kicker">Our Services</div>
-        <h2>Ship anything, anywhere</h2>
-        <p>From overnight envelopes to freight pallets, choose the delivery speed that fits your needs.</p>
+        <div class="kicker" data-i18n="svcKicker">Our Services</div>
+        <h2 data-i18n="svcTitle">Ship anything, anywhere</h2>
+        <p data-i18n="svcSub">From overnight envelopes to freight pallets, choose the delivery speed that fits your needs.</p>
       </div>
       <div class="grid">
         <div class="card">
           <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80')"></div>
           <div class="body">
-            <h4>Overnight Express</h4>
-            <p>Guaranteed next-business-day delivery by 10:30 AM to most cities across the country.</p>
-            <a href="#">Get a rate →</a>
+            <h4 data-i18n="svc1t">Overnight Express</h4>
+            <p data-i18n="svc1p">Guaranteed next-business-day delivery by 10:30 AM to most cities across the country.</p>
+            <a href="#" data-i18n="getRate">Get a rate →</a>
           </div>
         </div>
         <div class="card">
           <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=800&q=80')"></div>
           <div class="body">
-            <h4>Ground Shipping</h4>
-            <p>Cost-effective delivery in 1–5 business days with full tracking and door-to-door service.</p>
-            <a href="#">Get a rate →</a>
+            <h4 data-i18n="svc2t">Ground Shipping</h4>
+            <p data-i18n="svc2p">Cost-effective delivery in 1–5 business days with full tracking and door-to-door service.</p>
+            <a href="#" data-i18n="getRate">Get a rate →</a>
           </div>
         </div>
         <div class="card">
           <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=800&q=80')"></div>
           <div class="body">
-            <h4>International Air</h4>
-            <p>Customs-cleared express shipping to 220+ countries and territories worldwide.</p>
-            <a href="#">Get a rate →</a>
+            <h4 data-i18n="svc3t">International Air</h4>
+            <p data-i18n="svc3p">Customs-cleared express shipping to 220+ countries and territories worldwide.</p>
+            <a href="#" data-i18n="getRate">Get a rate →</a>
           </div>
         </div>
         <div class="card">
           <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80')"></div>
           <div class="body">
-            <h4>Freight & Pallets</h4>
-            <p>Heavy and oversized freight moved safely with priority and economy options.</p>
-            <a href="#">Get a rate →</a>
+            <h4 data-i18n="svc4t">Freight &amp; Pallets</h4>
+            <p data-i18n="svc4p">Heavy and oversized freight moved safely with priority and economy options.</p>
+            <a href="#" data-i18n="getRate">Get a rate →</a>
           </div>
         </div>
         <div class="card">
           <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=800&q=80')"></div>
           <div class="body">
-            <h4>Same-Day Courier</h4>
-            <p>Urgent local deliveries picked up and dropped off within hours across the metro.</p>
-            <a href="#">Get a rate →</a>
+            <h4 data-i18n="svc5t">Same-Day Courier</h4>
+            <p data-i18n="svc5p">Urgent local deliveries picked up and dropped off within hours across the metro.</p>
+            <a href="#" data-i18n="getRate">Get a rate →</a>
           </div>
         </div>
         <div class="card">
           <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1580674285054-bed31e145f59?auto=format&fit=crop&w=800&q=80')"></div>
           <div class="body">
-            <h4>Business Solutions</h4>
-            <p>Bulk shipping, warehousing, and fulfillment tools built for growing companies.</p>
-            <a href="#">Get a rate →</a>
+            <h4 data-i18n="svc6t">Business Solutions</h4>
+            <p data-i18n="svc6p">Bulk shipping, warehousing, and fulfillment tools built for growing companies.</p>
+            <a href="#" data-i18n="getRate">Get a rate →</a>
           </div>
         </div>
       </div>
@@ -383,9 +400,9 @@
   <section id="map" style="background:var(--bg-2)">
     <div class="container">
       <div class="section-head">
-        <div class="kicker">Find Us</div>
-        <h2>Drop-off locations near you</h2>
-        <p>Thousands of staffed stores, lockers, and drop boxes — open the map to find the closest one.</p>
+        <div class="kicker" data-i18n="mapKicker">Find Us</div>
+        <h2 data-i18n="mapTitle">Drop-off locations near you</h2>
+        <p data-i18n="mapSub">Thousands of staffed stores, lockers, and drop boxes — open the map to find the closest one.</p>
       </div>
       <div class="map-wrap">
         <div class="map-frame">
@@ -399,16 +416,16 @@
           </iframe>
         </div>
         <div class="map-side">
-          <h2>Ship &amp; pick up nearby</h2>
-          <p>Enter a city or ZIP code to see the closest TransFastGlobal locations, hours, and available services.</p>
+          <h2 data-i18n="mapSideTitle">Ship &amp; pick up nearby</h2>
+          <p data-i18n="mapSideSub">Enter a city or ZIP code to see the closest TransFastGlobal locations, hours, and available services.</p>
           <div class="locate-row">
-            <input type="text" placeholder="City or ZIP code" />
-            <button class="btn btn-orange">Search</button>
+            <input type="text" data-i18n-ph="mapPh" placeholder="City or ZIP code" />
+            <button class="btn btn-orange" data-i18n="searchBtn">Search</button>
           </div>
           <div class="stat-row">
-            <div class="stat"><div class="n">62K+</div><div class="l">Locations</div></div>
-            <div class="stat"><div class="n">220</div><div class="l">Countries</div></div>
-            <div class="stat"><div class="n">24/7</div><div class="l">Drop boxes</div></div>
+            <div class="stat"><div class="n">62K+</div><div class="l" data-i18n="stat_locations">Locations</div></div>
+            <div class="stat"><div class="n">220</div><div class="l" data-i18n="stat_countries">Countries</div></div>
+            <div class="stat"><div class="n">24/7</div><div class="l" data-i18n="stat_dropboxes">Drop boxes</div></div>
           </div>
         </div>
       </div>
@@ -419,14 +436,14 @@
   <section id="how">
     <div class="container">
       <div class="section-head">
-        <div class="kicker">How It Works</div>
-        <h2>Shipping in four simple steps</h2>
+        <div class="kicker" data-i18n="howKicker">How It Works</div>
+        <h2 data-i18n="howTitle">Shipping in four simple steps</h2>
       </div>
       <div class="steps">
-        <div class="step"><div class="ico">📝</div><h4>1. Create label</h4><p>Enter package details and print your shipping label in seconds.</p></div>
-        <div class="step"><div class="ico">📍</div><h4>2. Drop off</h4><p>Leave it at any TransFastGlobal location or schedule a pickup.</p></div>
-        <div class="step"><div class="ico">🚚</div><h4>3. In transit</h4><p>Follow every scan with live tracking and alerts.</p></div>
-        <div class="step"><div class="ico">✅</div><h4>4. Delivered</h4><p>Get proof of delivery the moment it arrives.</p></div>
+        <div class="step"><div class="ico">📝</div><h4 data-i18n="step1t">1. Create label</h4><p data-i18n="step1p">Enter package details and print your shipping label in seconds.</p></div>
+        <div class="step"><div class="ico">📍</div><h4 data-i18n="step2t">2. Drop off</h4><p data-i18n="step2p">Leave it at any TransFastGlobal location or schedule a pickup.</p></div>
+        <div class="step"><div class="ico">🚚</div><h4 data-i18n="step3t">3. In transit</h4><p data-i18n="step3p">Follow every scan with live tracking and alerts.</p></div>
+        <div class="step"><div class="ico">✅</div><h4 data-i18n="step4t">4. Delivered</h4><p data-i18n="step4p">Get proof of delivery the moment it arrives.</p></div>
       </div>
     </div>
   </section>
@@ -435,9 +452,9 @@
   <section>
     <div class="container">
       <div class="cta">
-        <h2>Ready to ship?</h2>
-        <p>Create an account and get discounted rates on your first 10 shipments.</p>
-        <button class="btn btn-orange" style="padding:14px 34px;font-size:16px">Create free account</button>
+        <h2 data-i18n="ctaTitle">Ready to ship?</h2>
+        <p data-i18n="ctaSub">Create an account and get discounted rates on your first 10 shipments.</p>
+        <button class="btn btn-orange" data-i18n="ctaBtn" style="padding:14px 34px;font-size:16px">Create free account</button>
       </div>
     </div>
   </section>
@@ -456,24 +473,24 @@
             </svg>
             <span class="a">TransFast</span><span class="b">Global</span>
           </div>
-          <p style="color:var(--text-dim);font-size:14px;max-width:280px">Fast delivery, real-time tracking, and worldwide reach — shipping made simple.</p>
+          <p style="color:var(--text-dim);font-size:14px;max-width:280px" data-i18n="footTagline">Fast delivery, real-time tracking, and worldwide reach — shipping made simple.</p>
         </div>
         <div>
-          <h5>Ship</h5>
-          <ul><li><a href="#">Get rates</a></li><li><a href="#">Create label</a></li><li><a href="#">Schedule pickup</a></li><li><a href="#">Packaging</a></li></ul>
+          <h5 data-i18n="footShip">Ship</h5>
+          <ul><li><a href="#" data-i18n="fl_getrates">Get rates</a></li><li><a href="#" data-i18n="fl_createlabel">Create label</a></li><li><a href="#" data-i18n="fl_schedule">Schedule pickup</a></li><li><a href="#" data-i18n="fl_packaging">Packaging</a></li></ul>
         </div>
         <div>
-          <h5>Track</h5>
-          <ul><li><a href="#">Track by number</a></li><li><a href="#">Delivery manager</a></li><li><a href="#">Claims</a></li><li><a href="#">Alerts</a></li></ul>
+          <h5 data-i18n="footTrack">Track</h5>
+          <ul><li><a href="#" data-i18n="fl_trackbynumber">Track by number</a></li><li><a href="#" data-i18n="fl_deliverymgr">Delivery manager</a></li><li><a href="#" data-i18n="fl_claims">Claims</a></li><li><a href="#" data-i18n="fl_alerts">Alerts</a></li></ul>
         </div>
         <div>
-          <h5>Company</h5>
-          <ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Newsroom</a></li><li><a href="#">Contact</a></li></ul>
+          <h5 data-i18n="footCompany">Company</h5>
+          <ul><li><a href="#" data-i18n="fl_about">About</a></li><li><a href="#" data-i18n="fl_careers">Careers</a></li><li><a href="#" data-i18n="fl_newsroom">Newsroom</a></li><li><a href="contact.html" data-i18n="fl_contact">Contact</a></li></ul>
         </div>
       </div>
       <div class="foot-bottom">
-        <div>© 2026 TransFastGlobal. All rights reserved.</div>
-        <div>Privacy · Terms · Cookies</div>
+        <div data-i18n="copyright">© 2026 TransFastGlobal. All rights reserved.</div>
+        <div data-i18n="legal">Privacy · Terms · Cookies</div>
       </div>
     </div>
   </footer>
@@ -482,7 +499,7 @@
   <div class="modal-back" id="modal">
     <div class="modal">
       <div class="modal-head">
-        <h3>Tracking <span id="trackNum">#0000</span></h3>
+        <h3><span data-i18n="modalTracking">Tracking</span> <span id="trackNum">#0000</span></h3>
         <button class="close" onclick="closeModal()">×</button>
       </div>
       <div class="modal-body" id="modalBody">
@@ -505,6 +522,212 @@
   }
   syncToggleIcon();
 
+  /* ---------- Internationalization ---------- */
+  var I18N = {
+    en: {
+      t_support:"Support", t_locations:"Locations", t_signup:"Sign Up / Log In",
+      nav_track:"Track", nav_ship:"Ship", nav_locations:"Locations", nav_contact:"Contact",
+      btn_signin:"Sign In", btn_shipnow:"Ship Now",
+      heroTitle:'Fast, reliable <span>delivery</span><br>everywhere you ship.',
+      heroSub:"Track packages in real time, find drop-off locations, and get your shipment where it needs to be — on time, every time.",
+      trackTitle:"📦 Track your shipment", trackBtn:"Track", trackPh:"Enter tracking number (e.g. TFG100001)",
+      trackHint:"Enter your tracking number to see the latest delivery status.",
+      svcKicker:"Our Services", svcTitle:"Ship anything, anywhere",
+      svcSub:"From overnight envelopes to freight pallets, choose the delivery speed that fits your needs.",
+      svc1t:"Overnight Express", svc1p:"Guaranteed next-business-day delivery by 10:30 AM to most cities across the country.",
+      svc2t:"Ground Shipping", svc2p:"Cost-effective delivery in 1–5 business days with full tracking and door-to-door service.",
+      svc3t:"International Air", svc3p:"Customs-cleared express shipping to 220+ countries and territories worldwide.",
+      svc4t:"Freight & Pallets", svc4p:"Heavy and oversized freight moved safely with priority and economy options.",
+      svc5t:"Same-Day Courier", svc5p:"Urgent local deliveries picked up and dropped off within hours across the metro.",
+      svc6t:"Business Solutions", svc6p:"Bulk shipping, warehousing, and fulfillment tools built for growing companies.",
+      getRate:"Get a rate →",
+      mapKicker:"Find Us", mapTitle:"Drop-off locations near you",
+      mapSub:"Thousands of staffed stores, lockers, and drop boxes — open the map to find the closest one.",
+      mapSideTitle:"Ship & pick up nearby",
+      mapSideSub:"Enter a city or ZIP code to see the closest TransFastGlobal locations, hours, and available services.",
+      mapPh:"City or ZIP code", searchBtn:"Search",
+      stat_locations:"Locations", stat_countries:"Countries", stat_dropboxes:"Drop boxes",
+      howKicker:"How It Works", howTitle:"Shipping in four simple steps",
+      step1t:"1. Create label", step1p:"Enter package details and print your shipping label in seconds.",
+      step2t:"2. Drop off", step2p:"Leave it at any TransFastGlobal location or schedule a pickup.",
+      step3t:"3. In transit", step3p:"Follow every scan with live tracking and alerts.",
+      step4t:"4. Delivered", step4p:"Get proof of delivery the moment it arrives.",
+      ctaTitle:"Ready to ship?", ctaSub:"Create an account and get discounted rates on your first 10 shipments.", ctaBtn:"Create free account",
+      footTagline:"Fast delivery, real-time tracking, and worldwide reach — shipping made simple.",
+      footShip:"Ship", footTrack:"Track", footCompany:"Company",
+      fl_getrates:"Get rates", fl_createlabel:"Create label", fl_schedule:"Schedule pickup", fl_packaging:"Packaging",
+      fl_trackbynumber:"Track by number", fl_deliverymgr:"Delivery manager", fl_claims:"Claims", fl_alerts:"Alerts",
+      fl_about:"About", fl_careers:"Careers", fl_newsroom:"Newsroom", fl_contact:"Contact",
+      copyright:"© 2026 TransFastGlobal. All rights reserved.", legal:"Privacy · Terms · Cookies", modalTracking:"Tracking",
+      lblShipper:"Shipper", lblRecipient:"Recipient", lblService:"Service", lblEta:"Est. delivery", lblDelivered:"Delivered",
+      notFound:"No shipment found for", notFoundBody:"Double-check the tracking number. If your label was just created, it can take a few hours to appear. Need help? Contact support.", looking:"Looking up your shipment…"
+    },
+    es: {
+      t_support:"Soporte", t_locations:"Ubicaciones", t_signup:"Registrarse / Iniciar sesión",
+      nav_track:"Rastrear", nav_ship:"Enviar", nav_locations:"Ubicaciones", nav_contact:"Contacto",
+      btn_signin:"Iniciar sesión", btn_shipnow:"Enviar ahora",
+      heroTitle:'Entregas rápidas y <span>confiables</span><br>dondequiera que envíes.',
+      heroSub:"Rastrea paquetes en tiempo real, encuentra puntos de entrega y haz que tu envío llegue a donde debe estar, puntual, siempre.",
+      trackTitle:"📦 Rastrea tu envío", trackBtn:"Rastrear", trackPh:"Ingresa el número de rastreo (ej. TFG100001)",
+      trackHint:"Ingresa tu número de rastreo para ver el estado de entrega más reciente.",
+      svcKicker:"Nuestros servicios", svcTitle:"Envía cualquier cosa, a cualquier lugar",
+      svcSub:"Desde sobres urgentes hasta palés de carga, elige la velocidad de entrega que se ajuste a tus necesidades.",
+      svc1t:"Exprés Nocturno", svc1p:"Entrega garantizada al siguiente día hábil antes de las 10:30 en la mayoría de las ciudades del país.",
+      svc2t:"Envío Terrestre", svc2p:"Entrega económica en 1 a 5 días hábiles con rastreo completo y servicio puerta a puerta.",
+      svc3t:"Aéreo Internacional", svc3p:"Envío exprés con despacho aduanero a más de 220 países y territorios en todo el mundo.",
+      svc4t:"Carga y Palés", svc4p:"Carga pesada y de gran tamaño transportada de forma segura con opciones prioritarias y económicas.",
+      svc5t:"Mensajería el Mismo Día", svc5p:"Entregas locales urgentes recogidas y entregadas en cuestión de horas en toda la ciudad.",
+      svc6t:"Soluciones Empresariales", svc6p:"Herramientas de envío masivo, almacenamiento y cumplimiento para empresas en crecimiento.",
+      getRate:"Obtener tarifa →",
+      mapKicker:"Encuéntranos", mapTitle:"Puntos de entrega cerca de ti",
+      mapSub:"Miles de tiendas atendidas, casilleros y buzones: abre el mapa para encontrar el más cercano.",
+      mapSideTitle:"Envía y recoge cerca",
+      mapSideSub:"Ingresa una ciudad o código postal para ver las ubicaciones de TransFastGlobal más cercanas, horarios y servicios disponibles.",
+      mapPh:"Ciudad o código postal", searchBtn:"Buscar",
+      stat_locations:"Ubicaciones", stat_countries:"Países", stat_dropboxes:"Buzones",
+      howKicker:"Cómo funciona", howTitle:"Envía en cuatro simples pasos",
+      step1t:"1. Crear etiqueta", step1p:"Ingresa los detalles del paquete e imprime tu etiqueta de envío en segundos.",
+      step2t:"2. Entregar", step2p:"Déjalo en cualquier ubicación de TransFastGlobal o programa una recogida.",
+      step3t:"3. En tránsito", step3p:"Sigue cada escaneo con rastreo y alertas en vivo.",
+      step4t:"4. Entregado", step4p:"Recibe comprobante de entrega en el momento en que llega.",
+      ctaTitle:"¿Listo para enviar?", ctaSub:"Crea una cuenta y obtén tarifas con descuento en tus primeros 10 envíos.", ctaBtn:"Crear cuenta gratis",
+      footTagline:"Entrega rápida, rastreo en tiempo real y alcance mundial: envíos simplificados.",
+      footShip:"Enviar", footTrack:"Rastrear", footCompany:"Empresa",
+      fl_getrates:"Ver tarifas", fl_createlabel:"Crear etiqueta", fl_schedule:"Programar recogida", fl_packaging:"Embalaje",
+      fl_trackbynumber:"Rastrear por número", fl_deliverymgr:"Gestor de entregas", fl_claims:"Reclamaciones", fl_alerts:"Alertas",
+      fl_about:"Acerca de", fl_careers:"Empleo", fl_newsroom:"Prensa", fl_contact:"Contacto",
+      copyright:"© 2026 TransFastGlobal. Todos los derechos reservados.", legal:"Privacidad · Términos · Cookies", modalTracking:"Rastreo",
+      lblShipper:"Remitente", lblRecipient:"Destinatario", lblService:"Servicio", lblEta:"Entrega estimada", lblDelivered:"Entregado",
+      notFound:"No se encontró ningún envío para", notFoundBody:"Verifica el número de rastreo. Si tu etiqueta se acaba de crear, puede tardar unas horas en aparecer. ¿Necesitas ayuda? Contacta con soporte.", looking:"Buscando tu envío…"
+    },
+    fr: {
+      t_support:"Assistance", t_locations:"Emplacements", t_signup:"S'inscrire / Se connecter",
+      nav_track:"Suivre", nav_ship:"Expédier", nav_locations:"Emplacements", nav_contact:"Contact",
+      btn_signin:"Se connecter", btn_shipnow:"Expédier",
+      heroTitle:'Livraison rapide et <span>fiable</span><br>partout où vous expédiez.',
+      heroSub:"Suivez vos colis en temps réel, trouvez des points de dépôt et faites parvenir votre envoi là où il doit être — à l'heure, à chaque fois.",
+      trackTitle:"📦 Suivez votre envoi", trackBtn:"Suivre", trackPh:"Saisissez le numéro de suivi (ex. TFG100001)",
+      trackHint:"Saisissez votre numéro de suivi pour voir le dernier statut de livraison.",
+      svcKicker:"Nos services", svcTitle:"Expédiez tout, partout",
+      svcSub:"Des enveloppes express aux palettes de fret, choisissez la vitesse de livraison adaptée à vos besoins.",
+      svc1t:"Express de Nuit", svc1p:"Livraison garantie le jour ouvrable suivant avant 10h30 dans la plupart des villes du pays.",
+      svc2t:"Livraison Terrestre", svc2p:"Livraison économique en 1 à 5 jours ouvrables avec suivi complet et service porte-à-porte.",
+      svc3t:"Fret Aérien International", svc3p:"Expédition express dédouanée vers plus de 220 pays et territoires dans le monde.",
+      svc4t:"Fret et Palettes", svc4p:"Fret lourd et volumineux transporté en toute sécurité avec des options prioritaires et économiques.",
+      svc5t:"Coursier le Jour Même", svc5p:"Livraisons locales urgentes récupérées et déposées en quelques heures dans toute la métropole.",
+      svc6t:"Solutions Entreprises", svc6p:"Outils d'expédition en masse, d'entreposage et de traitement conçus pour les entreprises en croissance.",
+      getRate:"Obtenir un tarif →",
+      mapKicker:"Nous trouver", mapTitle:"Points de dépôt près de chez vous",
+      mapSub:"Des milliers de magasins avec personnel, casiers et boîtes de dépôt — ouvrez la carte pour trouver le plus proche.",
+      mapSideTitle:"Expédiez et récupérez à proximité",
+      mapSideSub:"Saisissez une ville ou un code postal pour voir les emplacements TransFastGlobal les plus proches, les horaires et les services disponibles.",
+      mapPh:"Ville ou code postal", searchBtn:"Rechercher",
+      stat_locations:"Emplacements", stat_countries:"Pays", stat_dropboxes:"Boîtes de dépôt",
+      howKicker:"Comment ça marche", howTitle:"Expédiez en quatre étapes simples",
+      step1t:"1. Créer l'étiquette", step1p:"Saisissez les détails du colis et imprimez votre étiquette d'expédition en quelques secondes.",
+      step2t:"2. Déposer", step2p:"Déposez-le dans n'importe quel emplacement TransFastGlobal ou planifiez un enlèvement.",
+      step3t:"3. En transit", step3p:"Suivez chaque scan avec un suivi et des alertes en direct.",
+      step4t:"4. Livré", step4p:"Recevez une preuve de livraison dès son arrivée.",
+      ctaTitle:"Prêt à expédier ?", ctaSub:"Créez un compte et bénéficiez de tarifs réduits sur vos 10 premiers envois.", ctaBtn:"Créer un compte gratuit",
+      footTagline:"Livraison rapide, suivi en temps réel et portée mondiale — l'expédition simplifiée.",
+      footShip:"Expédier", footTrack:"Suivre", footCompany:"Entreprise",
+      fl_getrates:"Voir les tarifs", fl_createlabel:"Créer une étiquette", fl_schedule:"Planifier un enlèvement", fl_packaging:"Emballage",
+      fl_trackbynumber:"Suivre par numéro", fl_deliverymgr:"Gestionnaire de livraison", fl_claims:"Réclamations", fl_alerts:"Alertes",
+      fl_about:"À propos", fl_careers:"Carrières", fl_newsroom:"Actualités", fl_contact:"Contact",
+      copyright:"© 2026 TransFastGlobal. Tous droits réservés.", legal:"Confidentialité · Conditions · Cookies", modalTracking:"Suivi",
+      lblShipper:"Expéditeur", lblRecipient:"Destinataire", lblService:"Service", lblEta:"Livraison estimée", lblDelivered:"Livré",
+      notFound:"Aucun envoi trouvé pour", notFoundBody:"Vérifiez le numéro de suivi. Si votre étiquette vient d'être créée, elle peut prendre quelques heures à apparaître. Besoin d'aide ? Contactez l'assistance.", looking:"Recherche de votre envoi…"
+    },
+    ar: {
+      t_support:"الدعم", t_locations:"المواقع", t_signup:"إنشاء حساب / تسجيل الدخول",
+      nav_track:"تتبع", nav_ship:"شحن", nav_locations:"المواقع", nav_contact:"اتصل بنا",
+      btn_signin:"تسجيل الدخول", btn_shipnow:"اشحن الآن",
+      heroTitle:'توصيل سريع <span>وموثوق</span><br>أينما تشحن.',
+      heroSub:"تتبع الطرود في الوقت الفعلي، واعثر على نقاط التسليم، وأوصل شحنتك إلى وجهتها — في الوقت المحدد، دائمًا.",
+      trackTitle:"📦 تتبع شحنتك", trackBtn:"تتبع", trackPh:"أدخل رقم التتبع (مثال TFG100001)",
+      trackHint:"أدخل رقم التتبع الخاص بك لرؤية أحدث حالة للتسليم.",
+      svcKicker:"خدماتنا", svcTitle:"اشحن أي شيء، إلى أي مكان",
+      svcSub:"من الظروف العاجلة إلى منصات الشحن، اختر سرعة التسليم التي تناسب احتياجاتك.",
+      svc1t:"التوصيل السريع الليلي", svc1p:"تسليم مضمون في يوم العمل التالي قبل الساعة 10:30 صباحًا لمعظم المدن في جميع أنحاء البلاد.",
+      svc2t:"الشحن البري", svc2p:"تسليم اقتصادي خلال 1 إلى 5 أيام عمل مع تتبع كامل وخدمة من الباب إلى الباب.",
+      svc3t:"الشحن الجوي الدولي", svc3p:"شحن سريع مع تخليص جمركي إلى أكثر من 220 دولة وإقليمًا حول العالم.",
+      svc4t:"البضائع والمنصات", svc4p:"نقل البضائع الثقيلة والكبيرة بأمان مع خيارات ذات أولوية واقتصادية.",
+      svc5t:"توصيل في نفس اليوم", svc5p:"عمليات تسليم محلية عاجلة يتم استلامها وتسليمها في غضون ساعات في جميع أنحاء المدينة.",
+      svc6t:"حلول الأعمال", svc6p:"أدوات الشحن بالجملة والتخزين والتنفيذ المصممة للشركات النامية.",
+      getRate:"احصل على سعر ←",
+      mapKicker:"اعثر علينا", mapTitle:"نقاط التسليم بالقرب منك",
+      mapSub:"آلاف المتاجر المزودة بموظفين والخزائن وصناديق الإيداع — افتح الخريطة للعثور على الأقرب.",
+      mapSideTitle:"اشحن واستلم بالقرب منك",
+      mapSideSub:"أدخل المدينة أو الرمز البريدي لرؤية أقرب مواقع TransFastGlobal وساعات العمل والخدمات المتاحة.",
+      mapPh:"المدينة أو الرمز البريدي", searchBtn:"بحث",
+      stat_locations:"المواقع", stat_countries:"الدول", stat_dropboxes:"صناديق الإيداع",
+      howKicker:"كيف يعمل", howTitle:"الشحن في أربع خطوات بسيطة",
+      step1t:"١. إنشاء الملصق", step1p:"أدخل تفاصيل الطرد واطبع ملصق الشحن في ثوانٍ.",
+      step2t:"٢. التسليم", step2p:"اتركه في أي موقع من مواقع TransFastGlobal أو حدد موعدًا للاستلام.",
+      step3t:"٣. قيد النقل", step3p:"تابع كل عملية مسح مع التتبع والتنبيهات المباشرة.",
+      step4t:"٤. تم التسليم", step4p:"احصل على إثبات التسليم لحظة وصوله.",
+      ctaTitle:"هل أنت مستعد للشحن؟", ctaSub:"أنشئ حسابًا واحصل على أسعار مخفضة على أول 10 شحنات لك.", ctaBtn:"إنشاء حساب مجاني",
+      footTagline:"تسليم سريع، وتتبع في الوقت الفعلي، ووصول عالمي — الشحن بكل بساطة.",
+      footShip:"الشحن", footTrack:"التتبع", footCompany:"الشركة",
+      fl_getrates:"عرض الأسعار", fl_createlabel:"إنشاء ملصق", fl_schedule:"جدولة الاستلام", fl_packaging:"التغليف",
+      fl_trackbynumber:"التتبع بالرقم", fl_deliverymgr:"مدير التسليم", fl_claims:"المطالبات", fl_alerts:"التنبيهات",
+      fl_about:"من نحن", fl_careers:"الوظائف", fl_newsroom:"الأخبار", fl_contact:"اتصل بنا",
+      copyright:"© 2026 TransFastGlobal. جميع الحقوق محفوظة.", legal:"الخصوصية · الشروط · ملفات تعريف الارتباط", modalTracking:"تتبع",
+      lblShipper:"المُرسِل", lblRecipient:"المُستلِم", lblService:"الخدمة", lblEta:"التسليم المتوقع", lblDelivered:"تم التسليم",
+      notFound:"لم يتم العثور على شحنة لـ", notFoundBody:"تحقق من رقم التتبع. إذا تم إنشاء ملصقك للتو، فقد يستغرق ظهوره بضع ساعات. تحتاج مساعدة؟ اتصل بالدعم.", looking:"جارٍ البحث عن شحنتك…"
+    },
+    zh: {
+      t_support:"支持", t_locations:"网点", t_signup:"注册 / 登录",
+      nav_track:"追踪", nav_ship:"寄件", nav_locations:"网点", nav_contact:"联系我们",
+      btn_signin:"登录", btn_shipnow:"立即寄件",
+      heroTitle:'快速可靠的<span>配送</span><br>无论您寄往何处。',
+      heroSub:"实时追踪包裹，查找投递点，让您的货物准时送达目的地——每一次都准时。",
+      trackTitle:"📦 追踪您的货件", trackBtn:"追踪", trackPh:"输入追踪单号（例如 TFG100001）",
+      trackHint:"输入您的追踪单号以查看最新的投递状态。",
+      svcKicker:"我们的服务", svcTitle:"寄送任何物品，到达任何地方",
+      svcSub:"从隔夜信封到货运托盘，选择适合您需求的投递速度。",
+      svc1t:"隔夜快递", svc1p:"保证在下一个工作日上午10:30前送达全国大多数城市。",
+      svc2t:"陆运", svc2p:"1至5个工作日的经济型投递，提供全程追踪和门到门服务。",
+      svc3t:"国际空运", svc3p:"已清关的快递服务，可寄往全球220多个国家和地区。",
+      svc4t:"货运与托盘", svc4p:"安全运输重型和超大货物，提供优先和经济选项。",
+      svc5t:"当日速递", svc5p:"紧急本地投递，在全市范围内数小时内取件和送达。",
+      svc6t:"企业解决方案", svc6p:"为成长型企业打造的批量寄件、仓储和履约工具。",
+      getRate:"获取报价 →",
+      mapKicker:"找到我们", mapTitle:"您附近的投递点",
+      mapSub:"数千个有人值守的门店、储物柜和投递箱——打开地图查找最近的一个。",
+      mapSideTitle:"就近寄件和取件",
+      mapSideSub:"输入城市或邮政编码，查看最近的 TransFastGlobal 网点、营业时间和可用服务。",
+      mapPh:"城市或邮政编码", searchBtn:"搜索",
+      stat_locations:"网点", stat_countries:"国家", stat_dropboxes:"投递箱",
+      howKicker:"运作方式", howTitle:"四个简单步骤完成寄件",
+      step1t:"1. 创建标签", step1p:"输入包裹详情，几秒钟内打印您的运输标签。",
+      step2t:"2. 投递", step2p:"将其放在任何 TransFastGlobal 网点或预约取件。",
+      step3t:"3. 运输中", step3p:"通过实时追踪和提醒关注每一次扫描。",
+      step4t:"4. 已送达", step4p:"货物送达即刻获得投递证明。",
+      ctaTitle:"准备好寄件了吗？", ctaSub:"创建账户，前10次寄件享受折扣价。", ctaBtn:"创建免费账户",
+      footTagline:"快速投递、实时追踪、全球覆盖——让寄件变得简单。",
+      footShip:"寄件", footTrack:"追踪", footCompany:"公司",
+      fl_getrates:"查看报价", fl_createlabel:"创建标签", fl_schedule:"预约取件", fl_packaging:"包装",
+      fl_trackbynumber:"按单号追踪", fl_deliverymgr:"投递管理", fl_claims:"索赔", fl_alerts:"提醒",
+      fl_about:"关于我们", fl_careers:"招聘", fl_newsroom:"新闻中心", fl_contact:"联系我们",
+      copyright:"© 2026 TransFastGlobal. 保留所有权利。", legal:"隐私 · 条款 · Cookie", modalTracking:"追踪",
+      lblShipper:"寄件人", lblRecipient:"收件人", lblService:"服务", lblEta:"预计送达", lblDelivered:"已送达",
+      notFound:"未找到该单号的货件", notFoundBody:"请核对追踪单号。如果标签刚刚创建，可能需要几个小时才会显示。需要帮助？请联系支持。", looking:"正在查找您的货件…"
+    }
+  };
+  var L = I18N.en;
+  function applyLang(lang){
+    var d = I18N[lang] || I18N.en; L = d;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){ var k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k]; });
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){ var k=el.getAttribute('data-i18n-html'); if(d[k]!=null) el.innerHTML=d[k]; });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el){ var k=el.getAttribute('data-i18n-ph'); if(d[k]!=null) el.setAttribute('placeholder', d[k]); });
+    document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', lang==='ar' ? 'rtl' : 'ltr');
+    localStorage.setItem('tfg-lang', lang);
+    var sel=document.getElementById('langSelect'); if(sel) sel.value=lang;
+  }
+  applyLang(localStorage.getItem('tfg-lang') || 'en');
+
   /* ---------- Tracking ---------- */
   // Shipment data lives in shipments.json (in the repo). Add or edit shipments
   // there and push — the site redeploys automatically.
@@ -525,9 +748,8 @@
       body.innerHTML =
         '<div class="not-found">' +
           '<div style="font-size:36px">🔍</div>' +
-          '<strong>No shipment found for "' + esc(raw) + '"</strong>' +
-          '<p>Double-check the tracking number. If your label was just created, ' +
-          'it can take a few hours to appear. Need help? Contact support.</p>' +
+          '<strong>' + L.notFound + ' "' + esc(raw) + '"</strong>' +
+          '<p>' + L.notFoundBody + '</p>' +
         '</div>';
       return;
     }
@@ -536,8 +758,8 @@
     var isException = /(exception|held|delay|failed)/i.test(status);
     var cls = isDelivered ? 'delivered' : (isException ? 'exception' : '');
     var etaText = isDelivered
-      ? ('Delivered ' + (s.deliveredOn || s.eta || ''))
-      : ('Est. delivery ' + (s.eta || '—'));
+      ? (L.lblDelivered + ' ' + (s.deliveredOn || s.eta || ''))
+      : (L.lblEta + ' ' + (s.eta || '—'));
 
     var html = '<div class="track-head-row">' +
         '<span class="badge ' + cls + '">● ' + esc(status) + '</span>' +
@@ -546,16 +768,16 @@
 
     if(s.shipper || s.recipient || s.from || s.to){
       html += '<div class="parties">' +
-        '<div class="party"><span class="plabel">Shipper</span><b>' + esc(s.shipper || '—') + '</b>' +
+        '<div class="party"><span class="plabel">' + L.lblShipper + '</span><b>' + esc(s.shipper || '—') + '</b>' +
           (s.from ? '<span class="ploc">' + esc(s.from) + '</span>' : '') + '</div>' +
         '<div class="party arrow">→</div>' +
-        '<div class="party"><span class="plabel">Recipient</span><b>' + esc(s.recipient || '—') + '</b>' +
+        '<div class="party"><span class="plabel">' + L.lblRecipient + '</span><b>' + esc(s.recipient || '—') + '</b>' +
           (s.to ? '<span class="ploc">' + esc(s.to) + '</span>' : '') + '</div>' +
       '</div>';
     }
 
     if(s.service){
-      html += '<div class="route"><div><span>Service</span><b>' + esc(s.service) + '</b></div></div>';
+      html += '<div class="route"><div><span>' + L.lblService + '</span><b>' + esc(s.service) + '</b></div></div>';
     }
 
     html += '<div class="timeline">';
@@ -574,7 +796,7 @@
     if(!raw){ document.getElementById('trackInput').focus(); return; }
     document.getElementById('trackNum').textContent = raw;
     document.getElementById('modalBody').innerHTML =
-      '<div class="not-found"><div style="font-size:30px">⏳</div><strong>Looking up your shipment…</strong></div>';
+      '<div class="not-found"><div style="font-size:30px">⏳</div><strong>' + L.looking + '</strong></div>';
     document.getElementById('modal').classList.add('open');
     loadShipments().then(function(data){
       renderTracking(raw, data[normalizeNum(raw)]);
