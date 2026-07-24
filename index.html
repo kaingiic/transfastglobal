@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>TransFastGlobal — Shipping, Tracking & Delivery</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23ff6600'/%3E%3Cpath d='M9 13 L16 20 L9 27 M18 13 L25 20 L18 27' stroke='%23fff' stroke-width='3.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <script>
   /* Apply saved theme before paint to avoid flash */
   (function(){
@@ -76,7 +77,9 @@
     transition:background .3s;
   }
   .nav{display:flex;align-items:center;gap:32px;height:72px}
-  .logo{display:flex;align-items:baseline;font-weight:800;font-size:25px;letter-spacing:-1px;white-space:nowrap}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:25px;letter-spacing:-1px;white-space:nowrap}
+  .logo-mark{width:34px;height:34px;flex-shrink:0}
+  .logo .a,.logo .b{align-self:baseline}
   .logo .a{color:var(--text)}
   .logo .b{color:var(--orange)}
   nav.main{display:flex;gap:26px;font-weight:600;font-size:15px;flex:1}
@@ -216,6 +219,16 @@
   .badge{display:inline-block;background:rgba(255,102,0,.15);color:var(--orange);padding:5px 12px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:18px}
   .badge.delivered{background:rgba(46,204,113,.15);color:#2ecc71}
   .badge.exception{background:rgba(231,76,60,.15);color:#e74c3c}
+  .track-head-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .track-head-row .badge{margin-bottom:0}
+  .eta-line{color:var(--text-dim);font-size:14px;font-weight:600}
+  .parties{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;margin:0 0 14px}
+  .party{background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:3px}
+  .party .plabel{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim)}
+  .party b{font-size:15px;color:var(--text)}
+  .party .ploc{font-size:12.5px;color:var(--text-dim)}
+  .party.arrow{background:none;border:0;padding:0;align-items:center;justify-content:center;color:var(--orange);font-size:22px;font-weight:800}
+  @media(max-width:480px){ .parties{grid-template-columns:1fr} .party.arrow{transform:rotate(90deg);padding:2px 0} }
   .route{display:flex;flex-wrap:wrap;gap:20px;margin:2px 0 20px;padding:14px 16px;background:var(--bg-3);border:1px solid var(--border);border-radius:10px}
   .route > div{display:flex;flex-direction:column;gap:3px}
   .route span{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim)}
@@ -263,12 +276,21 @@
   <!-- Header -->
   <header>
     <div class="container nav">
-      <div class="logo"><span class="a">TransFast</span><span class="b">Global</span></div>
+      <div class="logo">
+        <svg class="logo-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><linearGradient id="tfgGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6b1fb8"/><stop offset="1" stop-color="#ff6600"/></linearGradient></defs>
+          <rect x="1" y="1" width="38" height="38" rx="10" fill="url(#tfgGrad)"/>
+          <path d="M7 13 L13 20 L7 27" fill="none" stroke="#fff" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M15 13 L21 20 L15 27" fill="none" stroke="#fff" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+          <path d="M23 13 L29 20 L23 27" fill="none" stroke="#fff" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+        </svg>
+        <span class="a">TransFast</span><span class="b">Global</span>
+      </div>
       <nav class="main">
         <a href="#track">Track</a>
         <a href="#services">Ship</a>
         <a href="#map">Locations</a>
-        <a href="#how">Support</a>
+        <a href="contact.html">Contact</a>
       </nav>
       <div class="nav-actions">
         <button class="theme-toggle" id="themeToggle" title="Toggle dark / light mode" onclick="toggleTheme()">🌙</button>
@@ -425,7 +447,15 @@
     <div class="container">
       <div class="foot-grid">
         <div>
-          <div class="logo" style="font-size:22px;margin-bottom:12px"><span class="a">TransFast</span><span class="b">Global</span></div>
+          <div class="logo" style="font-size:22px;margin-bottom:12px">
+            <svg class="logo-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+              <rect x="1" y="1" width="38" height="38" rx="10" fill="url(#tfgGrad)"/>
+              <path d="M7 13 L13 20 L7 27" fill="none" stroke="#fff" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15 13 L21 20 L15 27" fill="none" stroke="#fff" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+              <path d="M23 13 L29 20 L23 27" fill="none" stroke="#fff" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+            </svg>
+            <span class="a">TransFast</span><span class="b">Global</span>
+          </div>
           <p style="color:var(--text-dim);font-size:14px;max-width:280px">Fast delivery, real-time tracking, and worldwide reach — shipping made simple.</p>
         </div>
         <div>
@@ -509,14 +539,23 @@
       ? ('Delivered ' + (s.deliveredOn || s.eta || ''))
       : ('Est. delivery ' + (s.eta || '—'));
 
-    var html = '<span class="badge ' + cls + '">● ' + esc(status) + ' — ' + esc(etaText) + '</span>';
-
-    if(s.from || s.to || s.service){
-      html += '<div class="route">' +
-        (s.from ? '<div><span>From</span><b>' + esc(s.from) + '</b></div>' : '') +
-        (s.to ? '<div><span>To</span><b>' + esc(s.to) + '</b></div>' : '') +
-        (s.service ? '<div><span>Service</span><b>' + esc(s.service) + '</b></div>' : '') +
+    var html = '<div class="track-head-row">' +
+        '<span class="badge ' + cls + '">● ' + esc(status) + '</span>' +
+        '<span class="eta-line">' + esc(etaText) + '</span>' +
       '</div>';
+
+    if(s.shipper || s.recipient || s.from || s.to){
+      html += '<div class="parties">' +
+        '<div class="party"><span class="plabel">Shipper</span><b>' + esc(s.shipper || '—') + '</b>' +
+          (s.from ? '<span class="ploc">' + esc(s.from) + '</span>' : '') + '</div>' +
+        '<div class="party arrow">→</div>' +
+        '<div class="party"><span class="plabel">Recipient</span><b>' + esc(s.recipient || '—') + '</b>' +
+          (s.to ? '<span class="ploc">' + esc(s.to) + '</span>' : '') + '</div>' +
+      '</div>';
+    }
+
+    if(s.service){
+      html += '<div class="route"><div><span>Service</span><b>' + esc(s.service) + '</b></div></div>';
     }
 
     html += '<div class="timeline">';

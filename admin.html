@@ -138,8 +138,12 @@
         <div><label>Delivered on (only if delivered)</label><input id="f_delivered" placeholder="Jul 22, 9:31 AM"></div>
       </div>
       <div class="grid2">
-        <div><label>From</label><input id="f_from" placeholder="Los Angeles, CA"></div>
-        <div><label>To</label><input id="f_to" placeholder="Phoenix, AZ"></div>
+        <div><label>Shipper name (sender)</label><input id="f_shipper" placeholder="Acme Supplies Inc."></div>
+        <div><label>Recipient name (client)</label><input id="f_recipient" placeholder="John Carter"></div>
+      </div>
+      <div class="grid2">
+        <div><label>From (origin)</label><input id="f_from" placeholder="Los Angeles, CA"></div>
+        <div><label>To (destination)</label><input id="f_to" placeholder="Phoenix, AZ"></div>
       </div>
       <label>Tracking events — newest first, one per line</label>
       <textarea id="f_events" placeholder="Out for delivery | Jul 24, 7:42 AM | Phoenix, AZ
@@ -274,7 +278,7 @@ Label created | Jul 22, 10:02 AM | Shipper"></textarea>
   function clearForm(){
     state.editingKey=null;
     document.getElementById('formTitle').textContent='Add a shipment';
-    ['f_num','f_service','f_eta','f_delivered','f_from','f_to','f_events'].forEach(function(id){document.getElementById(id).value='';});
+    ['f_num','f_service','f_eta','f_delivered','f_shipper','f_recipient','f_from','f_to','f_events'].forEach(function(id){document.getElementById(id).value='';});
     document.getElementById('f_status').value='In Transit';
     document.getElementById('f_num').removeAttribute('readonly');
   }
@@ -287,6 +291,8 @@ Label created | Jul 22, 10:02 AM | Shipper"></textarea>
     document.getElementById('f_service').value=s.service||'';
     document.getElementById('f_eta').value=s.eta||'';
     document.getElementById('f_delivered').value=s.deliveredOn||'';
+    document.getElementById('f_shipper').value=s.shipper||'';
+    document.getElementById('f_recipient').value=s.recipient||'';
     document.getElementById('f_from').value=s.from||'';
     document.getElementById('f_to').value=s.to||'';
     document.getElementById('f_events').value=eventsToText(s.events);
@@ -300,6 +306,8 @@ Label created | Jul 22, 10:02 AM | Shipper"></textarea>
       status: document.getElementById('f_status').value,
       service: document.getElementById('f_service').value.trim(),
       eta: document.getElementById('f_eta').value.trim(),
+      shipper: document.getElementById('f_shipper').value.trim(),
+      recipient: document.getElementById('f_recipient').value.trim(),
       from: document.getElementById('f_from').value.trim(),
       to: document.getElementById('f_to').value.trim(),
       events: textToEvents(document.getElementById('f_events').value)

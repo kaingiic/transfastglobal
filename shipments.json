@@ -5,6 +5,8 @@
     "eta": "Jul 25, 2026",
     "from": "Los Angeles, CA",
     "to": "Phoenix, AZ",
+    "shipper": "Acme Supplies Inc.",
+    "recipient": "Daniel Reyes",
     "events": [
       {
         "title": "Departed sort facility",
@@ -39,6 +41,8 @@
     "eta": "Jul 22, 2026",
     "from": "Los Angeles, CA",
     "to": "San Diego, CA",
+    "shipper": "Coastal Traders LLC",
+    "recipient": "R. Martinez",
     "events": [
       {
         "title": "Delivered — signed by R. MARTINEZ",
@@ -78,6 +82,8 @@
     "eta": "Jul 23, 2026 by 8:00 PM",
     "from": "Los Angeles, CA",
     "to": "Santa Monica, CA",
+    "shipper": "Sunset Boutique",
+    "recipient": "Emily Chen",
     "events": [
       {
         "title": "Out for delivery",
@@ -111,6 +117,8 @@
     "eta": "Delayed — updating",
     "from": "Los Angeles, CA",
     "to": "Toronto, ON, Canada",
+    "shipper": "Pacific Exports Co.",
+    "recipient": "Liam O'Brien",
     "events": [
       {
         "title": "Delay — held at customs",
