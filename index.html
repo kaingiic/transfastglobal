@@ -200,6 +200,20 @@
   .step h4{margin-bottom:8px}
   .step p{color:var(--text-dim);font-size:14px}
 
+  /* ---------- Reviews ---------- */
+  .rating-summary{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+  .rating-summary .stars{color:#ffb400;font-size:18px;letter-spacing:2px}
+  .rating-summary .rating-num{font-weight:800;font-size:18px;color:var(--text)}
+  .rating-summary .rating-count{color:var(--text-dim);font-size:14px}
+  .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .review{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:12px}
+  .review .stars{color:#ffb400;font-size:15px;letter-spacing:2px}
+  .review p{color:var(--text);font-size:14.5px;line-height:1.6;flex:1}
+  .reviewer{display:flex;align-items:center;gap:12px}
+  .reviewer .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0}
+  .reviewer b{display:block;font-size:14.5px;color:var(--text)}
+  .reviewer span{font-size:12.5px;color:var(--text-dim)}
+
   /* ---------- CTA ---------- */
   .cta{
     background:linear-gradient(115deg,var(--purple),var(--purple-light));
@@ -257,7 +271,7 @@
 
   /* ---------- Responsive ---------- */
   @media(max-width:900px){
-    .grid,.steps{grid-template-columns:1fr 1fr}
+    .grid,.steps,.reviews-grid{grid-template-columns:1fr 1fr}
     .map-wrap{grid-template-columns:1fr}
     .foot-grid{grid-template-columns:1fr 1fr}
     nav.main{display:none}
@@ -265,11 +279,34 @@
     .hero h1{font-size:38px}
   }
   @media(max-width:560px){
-    .grid,.steps,.foot-grid{grid-template-columns:1fr}
+    .grid,.steps,.foot-grid,.reviews-grid{grid-template-columns:1fr}
     .track-row{flex-direction:column}
     .hero h1{font-size:32px}
     .stat-row{flex-direction:column}
   }
+
+  /* ---------- Live chat widget ---------- */
+  .chat-widget{position:fixed;bottom:22px;right:22px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+  [dir="rtl"] .chat-widget{right:auto;left:22px;align-items:flex-start}
+  .chat-fab{width:60px;height:60px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(135deg,var(--purple),var(--orange));color:#fff;font-size:26px;box-shadow:0 8px 24px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;transition:transform .15s}
+  .chat-fab:hover{transform:scale(1.06)}
+  .chat-fab .chat-fab-close{display:none}
+  .chat-widget.open .chat-fab .chat-fab-open{display:none}
+  .chat-widget.open .chat-fab .chat-fab-close{display:block}
+  .chat-panel{width:320px;max-width:calc(100vw - 44px);background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 16px 50px rgba(0,0,0,.4);overflow:hidden;transform:translateY(12px) scale(.96);opacity:0;pointer-events:none;transition:transform .2s,opacity .2s}
+  .chat-widget.open .chat-panel{transform:translateY(0) scale(1);opacity:1;pointer-events:auto}
+  .chat-panel-head{background:linear-gradient(115deg,var(--purple),var(--purple-light));padding:18px 20px;display:flex;justify-content:space-between;align-items:flex-start;color:#fff}
+  .chat-title{font-weight:800;font-size:16px}
+  .chat-online{font-size:12px;color:#e6e0f0;display:flex;align-items:center;gap:6px;margin-top:2px}
+  .chat-online .dot{width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block}
+  .chat-x{background:none;border:0;color:#fff;font-size:24px;cursor:pointer;line-height:1}
+  .chat-panel-body{padding:18px;display:flex;flex-direction:column;gap:12px}
+  .chat-bubble{background:var(--bg-3);border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:14.5px;color:var(--text)}
+  .chat-bubble .chat-sub{color:var(--text-dim);font-size:12.5px;margin-top:6px}
+  .chat-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:10px;font-weight:700;font-size:14.5px;text-decoration:none;transition:filter .15s,transform .15s}
+  .chat-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+  .chat-wa{background:#25D366;color:#0a3d1f}
+  .chat-mail{background:var(--bg-3);border:1px solid var(--border);color:var(--text)}
 </style>
 </head>
 <body>
@@ -448,6 +485,53 @@
     </div>
   </section>
 
+  <!-- Reviews -->
+  <section id="reviews" style="background:var(--bg-2)">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker" data-i18n="revKicker">Reviews</div>
+        <h2 data-i18n="revTitle">Trusted by thousands of shippers</h2>
+        <div class="rating-summary">
+          <span class="stars">★★★★★</span>
+          <span class="rating-num">4.9</span>
+          <span class="rating-count">· 3,200+ verified reviews</span>
+        </div>
+      </div>
+      <div class="reviews-grid">
+        <div class="review">
+          <div class="stars">★★★★★</div>
+          <p>"My package arrived a full day ahead of schedule, and I could watch every scan along the way. Easily the most reliable courier I've used."</p>
+          <div class="reviewer"><div class="avatar">SM</div><div><b>Sarah M.</b><span>Los Angeles, CA</span></div></div>
+        </div>
+        <div class="review">
+          <div class="stars">★★★★★</div>
+          <p>"We ship 50+ orders a week for our store. TransFastGlobal's tracking and pickup scheduling have saved us hours. Support is fast too."</p>
+          <div class="reviewer"><div class="avatar">JO</div><div><b>James O.</b><span>Phoenix, AZ</span></div></div>
+        </div>
+        <div class="review">
+          <div class="stars">★★★★★</div>
+          <p>"Sent documents internationally and they cleared customs without a hitch. Real-time updates kept me calm the whole time."</p>
+          <div class="reviewer"><div class="avatar">AK</div><div><b>Amara K.</b><span>Toronto, ON</span></div></div>
+        </div>
+        <div class="review">
+          <div class="stars">★★★★★</div>
+          <p>"The same-day courier picked up within the hour and delivered before lunch. Incredible for urgent client deliveries."</p>
+          <div class="reviewer"><div class="avatar">DR</div><div><b>Daniel R.</b><span>Santa Monica, CA</span></div></div>
+        </div>
+        <div class="review">
+          <div class="stars">★★★★★</div>
+          <p>"Clear pricing, no surprises, and my fragile items arrived perfectly packed. I've switched all my shipping over to them."</p>
+          <div class="reviewer"><div class="avatar">EC</div><div><b>Emily C.</b><span>San Diego, CA</span></div></div>
+        </div>
+        <div class="review">
+          <div class="stars">★★★★★</div>
+          <p>"As a small business owner, the discounted rates and friendly support make a real difference. Highly recommend."</p>
+          <div class="reviewer"><div class="avatar">LB</div><div><b>Liam B.</b><span>Las Vegas, NV</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section>
     <div class="container">
@@ -508,6 +592,35 @@
     </div>
   </div>
 
+  <!-- Live chat widget -->
+  <div class="chat-widget">
+    <div class="chat-panel" id="chatPanel">
+      <div class="chat-panel-head">
+        <div>
+          <div class="chat-title" data-i18n="chatTitle">Chat with us</div>
+          <div class="chat-online"><span class="dot"></span>Online</div>
+        </div>
+        <button class="chat-x" onclick="toggleChat()" aria-label="Close chat">×</button>
+      </div>
+      <div class="chat-panel-body">
+        <div class="chat-bubble">
+          <div data-i18n="chatGreeting">Hi! 👋 How can we help you today?</div>
+          <div class="chat-sub" data-i18n="chatSub">We typically reply within a few minutes.</div>
+        </div>
+        <a class="chat-btn chat-wa" id="chatWaBtn" href="#" target="_blank" rel="noopener">
+          <span>💬</span> <span data-i18n="chatWhatsApp">Chat on WhatsApp</span>
+        </a>
+        <a class="chat-btn chat-mail" href="mailto:info@transfastglobal.org?subject=Website%20chat%20enquiry">
+          <span>✉️</span> <span data-i18n="chatEmail">Email us</span>
+        </a>
+      </div>
+    </div>
+    <button class="chat-fab" id="chatFab" onclick="toggleChat()" aria-label="Open chat">
+      <span class="chat-fab-open">💬</span>
+      <span class="chat-fab-close">×</span>
+    </button>
+  </div>
+
 <script>
   /* ---------- Theme toggle ---------- */
   function currentTheme(){ return document.documentElement.getAttribute('data-theme'); }
@@ -560,7 +673,8 @@
       fl_about:"About", fl_careers:"Careers", fl_newsroom:"Newsroom", fl_contact:"Contact",
       copyright:"© 2026 TransFastGlobal. All rights reserved.", legal:"Privacy · Terms · Cookies", modalTracking:"Tracking",
       lblShipper:"Shipper", lblRecipient:"Recipient", lblService:"Service", lblEta:"Est. delivery", lblDelivered:"Delivered",
-      notFound:"No shipment found for", notFoundBody:"Double-check the tracking number. If your label was just created, it can take a few hours to appear. Need help? Contact support.", looking:"Looking up your shipment…"
+      notFound:"No shipment found for", notFoundBody:"Double-check the tracking number. If your label was just created, it can take a few hours to appear. Need help? Contact support.", looking:"Looking up your shipment…",
+      revKicker:"Reviews", revTitle:"Trusted by thousands of shippers", chatTitle:"Chat with us", chatGreeting:"Hi! 👋 How can we help you today?", chatSub:"We typically reply within a few minutes.", chatWhatsApp:"Chat on WhatsApp", chatEmail:"Email us"
     },
     es: {
       t_support:"Soporte", t_locations:"Ubicaciones", t_signup:"Registrarse / Iniciar sesión",
@@ -598,7 +712,8 @@
       fl_about:"Acerca de", fl_careers:"Empleo", fl_newsroom:"Prensa", fl_contact:"Contacto",
       copyright:"© 2026 TransFastGlobal. Todos los derechos reservados.", legal:"Privacidad · Términos · Cookies", modalTracking:"Rastreo",
       lblShipper:"Remitente", lblRecipient:"Destinatario", lblService:"Servicio", lblEta:"Entrega estimada", lblDelivered:"Entregado",
-      notFound:"No se encontró ningún envío para", notFoundBody:"Verifica el número de rastreo. Si tu etiqueta se acaba de crear, puede tardar unas horas en aparecer. ¿Necesitas ayuda? Contacta con soporte.", looking:"Buscando tu envío…"
+      notFound:"No se encontró ningún envío para", notFoundBody:"Verifica el número de rastreo. Si tu etiqueta se acaba de crear, puede tardar unas horas en aparecer. ¿Necesitas ayuda? Contacta con soporte.", looking:"Buscando tu envío…",
+      revKicker:"Opiniones", revTitle:"La confianza de miles de clientes", chatTitle:"Chatea con nosotros", chatGreeting:"¡Hola! 👋 ¿Cómo podemos ayudarte hoy?", chatSub:"Normalmente respondemos en unos minutos.", chatWhatsApp:"Chatear por WhatsApp", chatEmail:"Envíanos un correo"
     },
     fr: {
       t_support:"Assistance", t_locations:"Emplacements", t_signup:"S'inscrire / Se connecter",
@@ -636,7 +751,8 @@
       fl_about:"À propos", fl_careers:"Carrières", fl_newsroom:"Actualités", fl_contact:"Contact",
       copyright:"© 2026 TransFastGlobal. Tous droits réservés.", legal:"Confidentialité · Conditions · Cookies", modalTracking:"Suivi",
       lblShipper:"Expéditeur", lblRecipient:"Destinataire", lblService:"Service", lblEta:"Livraison estimée", lblDelivered:"Livré",
-      notFound:"Aucun envoi trouvé pour", notFoundBody:"Vérifiez le numéro de suivi. Si votre étiquette vient d'être créée, elle peut prendre quelques heures à apparaître. Besoin d'aide ? Contactez l'assistance.", looking:"Recherche de votre envoi…"
+      notFound:"Aucun envoi trouvé pour", notFoundBody:"Vérifiez le numéro de suivi. Si votre étiquette vient d'être créée, elle peut prendre quelques heures à apparaître. Besoin d'aide ? Contactez l'assistance.", looking:"Recherche de votre envoi…",
+      revKicker:"Avis", revTitle:"La confiance de milliers d'expéditeurs", chatTitle:"Discutez avec nous", chatGreeting:"Bonjour ! 👋 Comment pouvons-nous vous aider ?", chatSub:"Nous répondons généralement en quelques minutes.", chatWhatsApp:"Discuter sur WhatsApp", chatEmail:"Envoyez-nous un e-mail"
     },
     ar: {
       t_support:"الدعم", t_locations:"المواقع", t_signup:"إنشاء حساب / تسجيل الدخول",
@@ -674,7 +790,8 @@
       fl_about:"من نحن", fl_careers:"الوظائف", fl_newsroom:"الأخبار", fl_contact:"اتصل بنا",
       copyright:"© 2026 TransFastGlobal. جميع الحقوق محفوظة.", legal:"الخصوصية · الشروط · ملفات تعريف الارتباط", modalTracking:"تتبع",
       lblShipper:"المُرسِل", lblRecipient:"المُستلِم", lblService:"الخدمة", lblEta:"التسليم المتوقع", lblDelivered:"تم التسليم",
-      notFound:"لم يتم العثور على شحنة لـ", notFoundBody:"تحقق من رقم التتبع. إذا تم إنشاء ملصقك للتو، فقد يستغرق ظهوره بضع ساعات. تحتاج مساعدة؟ اتصل بالدعم.", looking:"جارٍ البحث عن شحنتك…"
+      notFound:"لم يتم العثور على شحنة لـ", notFoundBody:"تحقق من رقم التتبع. إذا تم إنشاء ملصقك للتو، فقد يستغرق ظهوره بضع ساعات. تحتاج مساعدة؟ اتصل بالدعم.", looking:"جارٍ البحث عن شحنتك…",
+      revKicker:"التقييمات", revTitle:"موثوق به من قبل آلاف العملاء", chatTitle:"تحدث معنا", chatGreeting:"مرحبًا! 👋 كيف يمكننا مساعدتك اليوم؟", chatSub:"نرد عادةً في غضون دقائق.", chatWhatsApp:"الدردشة عبر واتساب", chatEmail:"راسلنا عبر البريد"
     },
     zh: {
       t_support:"支持", t_locations:"网点", t_signup:"注册 / 登录",
@@ -712,7 +829,8 @@
       fl_about:"关于我们", fl_careers:"招聘", fl_newsroom:"新闻中心", fl_contact:"联系我们",
       copyright:"© 2026 TransFastGlobal. 保留所有权利。", legal:"隐私 · 条款 · Cookie", modalTracking:"追踪",
       lblShipper:"寄件人", lblRecipient:"收件人", lblService:"服务", lblEta:"预计送达", lblDelivered:"已送达",
-      notFound:"未找到该单号的货件", notFoundBody:"请核对追踪单号。如果标签刚刚创建，可能需要几个小时才会显示。需要帮助？请联系支持。", looking:"正在查找您的货件…"
+      notFound:"未找到该单号的货件", notFoundBody:"请核对追踪单号。如果标签刚刚创建，可能需要几个小时才会显示。需要帮助？请联系支持。", looking:"正在查找您的货件…",
+      revKicker:"评价", revTitle:"数千位寄件人的信赖之选", chatTitle:"在线咨询", chatGreeting:"您好！👋 今天有什么可以帮您？", chatSub:"我们通常在几分钟内回复。", chatWhatsApp:"通过 WhatsApp 聊天", chatEmail:"发送邮件"
     }
   };
   var L = I18N.en;
@@ -726,7 +844,32 @@
     localStorage.setItem('tfg-lang', lang);
     var sel=document.getElementById('langSelect'); if(sel) sel.value=lang;
   }
-  applyLang(localStorage.getItem('tfg-lang') || 'en');
+  function detectLang(){
+    var saved = localStorage.getItem('tfg-lang');
+    if(saved && I18N[saved]) return saved;
+    var langs = navigator.languages || [navigator.language || navigator.userLanguage || 'en'];
+    for(var i=0;i<langs.length;i++){
+      var code = (langs[i]||'').slice(0,2).toLowerCase();
+      if(I18N[code]) return code;
+    }
+    return 'en';
+  }
+  applyLang(detectLang());
+
+  /* ---------- Live chat ---------- */
+  // Set your WhatsApp number here (country code + number, digits only), e.g. "12135550100".
+  // Leave empty to show only the email option.
+  var WHATSAPP_NUMBER = "";
+  (function(){
+    var wa = document.getElementById('chatWaBtn');
+    var num = (WHATSAPP_NUMBER || '').replace(/[^0-9]/g, '');
+    if(num){
+      wa.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent('Hi TransFastGlobal, I have a question about my shipment.');
+    } else {
+      wa.style.display = 'none';
+    }
+  })();
+  function toggleChat(){ document.querySelector('.chat-widget').classList.toggle('open'); }
 
   /* ---------- Tracking ---------- */
   // Shipment data lives in shipments.json (in the repo). Add or edit shipments
