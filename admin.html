@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>TransFastGlobal — Shipment Admin</title>
+<style>
+  :root{
+    --purple:#4d148c;--pl:#6b1fb8;--orange:#ff6600;
+    --bg:#0d0d12;--bg2:#15151f;--bg3:#1c1c2a;--card:#191925;
+    --b:#2a2a3a;--t:#f2f2f7;--d:#a0a0b4;--radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--t);line-height:1.5;min-height:100vh}
+  a{color:var(--orange)}
+  .wrap{max-width:920px;margin:0 auto;padding:28px 20px 80px}
+  header.bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:12px}
+  .logo{font-weight:800;font-size:24px;letter-spacing:-1px}
+  .logo .b{color:var(--orange)}
+  .tag{font-size:13px;color:var(--d)}
+  h2{font-size:20px;margin-bottom:14px}
+  .card{background:var(--card);border:1px solid var(--b);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+  label{display:block;font-weight:600;font-size:13px;margin:14px 0 6px}
+  input,select,textarea{width:100%;background:var(--bg3);border:1px solid var(--b);color:var(--t);padding:12px 14px;border-radius:8px;font-size:15px;outline:none;font-family:inherit}
+  input:focus,select:focus,textarea:focus{border-color:var(--orange)}
+  textarea{resize:vertical;min-height:110px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .btn{border:0;cursor:pointer;font-weight:700;font-size:14px;padding:12px 20px;border-radius:8px;transition:filter .15s,transform .15s}
+  .btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .btn-o{background:var(--orange);color:#111}
+  .btn-p{background:var(--pl);color:#fff}
+  .btn-ghost{background:transparent;border:1px solid var(--b);color:var(--t)}
+  .btn-danger{background:transparent;border:1px solid #e74c3c;color:#e74c3c}
+  .row-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .hint{font-size:12.5px;color:var(--d);margin-top:6px}
+  .msg{padding:12px 16px;border-radius:8px;font-size:14px;margin-bottom:16px;display:none}
+  .msg.ok{display:block;background:rgba(46,204,113,.14);color:#2ecc71;border:1px solid rgba(46,204,113,.3)}
+  .msg.err{display:block;background:rgba(231,76,60,.14);color:#e74c3c;border:1px solid rgba(231,76,60,.3);white-space:pre-wrap}
+  .msg.work{display:block;background:rgba(255,102,0,.14);color:var(--orange);border:1px solid rgba(255,102,0,.3)}
+  table{width:100%;border-collapse:collapse;margin-top:4px}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--b);font-size:14px}
+  th{color:var(--d);font-size:12px;text-transform:uppercase;letter-spacing:1px}
+  .pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;background:rgba(255,102,0,.15);color:var(--orange)}
+  .pill.delivered{background:rgba(46,204,113,.15);color:#2ecc71}
+  .pill.exception{background:rgba(231,76,60,.15);color:#e74c3c}
+  .mini{background:transparent;border:1px solid var(--b);color:var(--t);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}
+  .mini:hover{border-color:var(--orange)}
+  .hidden{display:none !important}
+  .center{max-width:460px;margin:8vh auto 0}
+  .lock-icon{font-size:40px;text-align:center;margin-bottom:8px}
+  code{background:var(--bg2);border:1px solid var(--b);padding:2px 6px;border-radius:5px;color:var(--orange);font-size:13px}
+  ol{margin:10px 0 0 20px;font-size:13.5px;color:var(--d)}
+  ol li{margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ SETUP (first run) ============ -->
+  <div id="setup" class="hidden">
+    <div class="center card">
+      <div class="lock-icon">🔐</div>
+      <h2 style="text-align:center">Set up your admin</h2>
+      <p class="hint" style="text-align:center;margin-bottom:14px">One-time setup, stored only in this browser.</p>
+
+      <label>Create an admin passphrase</label>
+      <input id="s_pass" type="password" placeholder="Choose a passphrase you'll remember">
+      <div class="hint">You'll type this each time you open this page. It stays on this computer only.</div>
+
+      <label>GitHub access token</label>
+      <input id="s_token" type="password" placeholder="github_pat_… or ghp_…">
+      <div class="hint">Grants permission to update your site's tracking data. How to get one:</div>
+      <ol>
+        <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a> (Fine-grained token)</li>
+        <li>Under <b>Repository access</b> → <b>Only select repositories</b> → pick <code>transfastglobal</code></li>
+        <li>Under <b>Permissions → Repository → Contents</b> → set to <b>Read and write</b></li>
+        <li>Set an expiration, click <b>Generate token</b>, copy it, and paste above</li>
+      </ol>
+
+      <div class="row-actions">
+        <button class="btn btn-o" onclick="doSetup()">Save &amp; unlock</button>
+      </div>
+      <div id="setupMsg" class="msg" style="margin-top:16px"></div>
+    </div>
+  </div>
+
+  <!-- ============ LOCK (returning) ============ -->
+  <div id="lock" class="hidden">
+    <div class="center card">
+      <div class="lock-icon">🔒</div>
+      <h2 style="text-align:center">TransFastGlobal Admin</h2>
+      <label>Passphrase</label>
+      <input id="l_pass" type="password" placeholder="Enter your passphrase" onkeydown="if(event.key==='Enter')doUnlock()">
+      <div class="row-actions">
+        <button class="btn btn-o" onclick="doUnlock()">Unlock</button>
+        <button class="btn btn-ghost" onclick="resetAll()">Reset setup</button>
+      </div>
+      <div id="lockMsg" class="msg" style="margin-top:16px"></div>
+    </div>
+  </div>
+
+  <!-- ============ APP ============ -->
+  <div id="app" class="hidden">
+    <header class="bar">
+      <div>
+        <div class="logo">TransFast<span class="b">Global</span></div>
+        <div class="tag">Shipment Admin · <a href="/" target="_blank">view site ↗</a></div>
+      </div>
+      <button class="btn btn-ghost" onclick="lockNow()">Lock 🔒</button>
+    </header>
+
+    <div id="appMsg" class="msg"></div>
+
+    <!-- Add / edit form -->
+    <div class="card">
+      <h2 id="formTitle">Add a shipment</h2>
+      <label>Tracking number *</label>
+      <input id="f_num" placeholder="TFG100005">
+      <div class="grid2">
+        <div>
+          <label>Status</label>
+          <select id="f_status">
+            <option>Label Created</option>
+            <option selected>In Transit</option>
+            <option>Out for Delivery</option>
+            <option>Delivered</option>
+            <option>Exception</option>
+          </select>
+        </div>
+        <div>
+          <label>Service</label>
+          <input id="f_service" placeholder="Ground Shipping">
+        </div>
+      </div>
+      <div class="grid2">
+        <div><label>Estimated delivery (ETA)</label><input id="f_eta" placeholder="Jul 28, 2026"></div>
+        <div><label>Delivered on (only if delivered)</label><input id="f_delivered" placeholder="Jul 22, 9:31 AM"></div>
+      </div>
+      <div class="grid2">
+        <div><label>From</label><input id="f_from" placeholder="Los Angeles, CA"></div>
+        <div><label>To</label><input id="f_to" placeholder="Phoenix, AZ"></div>
+      </div>
+      <label>Tracking events — newest first, one per line</label>
+      <textarea id="f_events" placeholder="Out for delivery | Jul 24, 7:42 AM | Phoenix, AZ
+Picked up | Jul 22, 2:10 PM | Los Angeles, CA
+Label created | Jul 22, 10:02 AM | Shipper"></textarea>
+      <div class="hint">Format each line as: <code>Title | Time | Place</code> (Place optional).</div>
+
+      <div class="row-actions">
+        <button class="btn btn-o" id="saveBtn" onclick="saveShipment()">Save shipment</button>
+        <button class="btn btn-ghost" onclick="clearForm()">Clear / new</button>
+      </div>
+    </div>
+
+    <!-- Existing shipments -->
+    <div class="card">
+      <h2>Current shipments</h2>
+      <div id="listWrap"><p class="hint">Loading…</p></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  /* ---------------- Config ---------------- */
+  var REPO = 'kaingiic/transfastglobal';
+  var FILE = 'shipments.json';
+  var BRANCH = 'main';
+
+  /* ---------------- State ---------------- */
+  var state = { data:{}, sha:null, editingKey:null };
+
+  /* ---------------- Crypto helpers (passphrase hash) ---------------- */
+  async function sha256(str){
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  function b64encode(str){ return btoa(unescape(encodeURIComponent(str))); }
+  function b64decode(b64){ return decodeURIComponent(escape(atob((b64||'').replace(/\n/g,'')))); }
+
+  /* ---------------- Storage ---------------- */
+  function cfg(){ try{ return JSON.parse(localStorage.getItem('tfg_admin')||'null'); }catch(e){ return null; } }
+  function saveCfg(o){ localStorage.setItem('tfg_admin', JSON.stringify(o)); }
+  var TOKEN = null; // held in memory after unlock
+
+  /* ---------------- Screen routing ---------------- */
+  function show(id){ ['setup','lock','app'].forEach(function(s){ document.getElementById(s).classList.toggle('hidden', s!==id); }); }
+  function boot(){ show(cfg() ? 'lock' : 'setup'); }
+
+  /* ---------------- Setup ---------------- */
+  async function doSetup(){
+    var pass = document.getElementById('s_pass').value.trim();
+    var tok  = document.getElementById('s_token').value.trim();
+    var m = document.getElementById('setupMsg');
+    if(pass.length < 4){ m.className='msg err'; m.textContent='Passphrase must be at least 4 characters.'; return; }
+    if(!tok){ m.className='msg err'; m.textContent='Please paste your GitHub token.'; return; }
+    saveCfg({ passHash: await sha256(pass), token: tok });
+    document.getElementById('s_pass').value=''; document.getElementById('s_token').value='';
+    TOKEN = tok;
+    show('app'); loadData();
+  }
+
+  /* ---------------- Unlock ---------------- */
+  async function doUnlock(){
+    var pass = document.getElementById('l_pass').value;
+    var m = document.getElementById('lockMsg');
+    var c = cfg();
+    if(!c){ show('setup'); return; }
+    if(await sha256(pass) !== c.passHash){ m.className='msg err'; m.textContent='Wrong passphrase.'; return; }
+    TOKEN = c.token;
+    document.getElementById('l_pass').value='';
+    show('app'); loadData();
+  }
+  function lockNow(){ TOKEN=null; document.getElementById('lockMsg').className='msg'; show('lock'); }
+  function resetAll(){
+    if(confirm('This clears the saved passphrase and token from this browser. Continue?')){
+      localStorage.removeItem('tfg_admin'); TOKEN=null; show('setup');
+    }
+  }
+
+  /* ---------------- GitHub API ---------------- */
+  function ghHeaders(){ return { 'Authorization':'Bearer '+TOKEN, 'Accept':'application/vnd.github+json' }; }
+  async function ghLoad(){
+    var r = await fetch('https://api.github.com/repos/'+REPO+'/contents/'+FILE+'?ref='+BRANCH+'&t='+Date.now(), { headers: ghHeaders() });
+    if(!r.ok) throw new Error('Load failed ('+r.status+'). '+ (r.status===401?'Your token is invalid or expired.': r.status===404?'shipments.json not found in the repo.': await r.text()));
+    var j = await r.json();
+    return { sha:j.sha, data: JSON.parse(b64decode(j.content)||'{}') };
+  }
+  async function ghSave(dataObj, msg){
+    var body = { message:msg, content:b64encode(JSON.stringify(dataObj,null,2)+'\n'), sha:state.sha, branch:BRANCH };
+    var r = await fetch('https://api.github.com/repos/'+REPO+'/contents/'+FILE, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+    if(!r.ok) throw new Error('Save failed ('+r.status+'). '+ (r.status===401?'Token invalid/expired.': r.status===409?'Someone else just changed the file — reload and try again.': await r.text()));
+    var j = await r.json();
+    state.sha = j.content.sha;
+  }
+
+  /* ---------------- Load & render list ---------------- */
+  function appMsg(kind, text){ var m=document.getElementById('appMsg'); m.className='msg '+kind; m.textContent=text; if(kind==='ok') setTimeout(function(){ if(m.textContent===text) m.className='msg'; },6000); }
+  async function loadData(){
+    document.getElementById('listWrap').innerHTML='<p class="hint">Loading…</p>';
+    try{
+      var res = await ghLoad(); state.data=res.data; state.sha=res.sha; renderList();
+    }catch(e){ document.getElementById('listWrap').innerHTML=''; appMsg('err', e.message); }
+  }
+  function pillClass(s){ s=(s||'').toLowerCase(); if(s.indexOf('deliver')>-1) return 'delivered'; if(/(exception|held|delay|failed)/.test(s)) return 'exception'; return ''; }
+  function esc(x){ var d=document.createElement('div'); d.textContent=(x==null?'':x); return d.innerHTML; }
+  function renderList(){
+    var keys = Object.keys(state.data);
+    if(!keys.length){ document.getElementById('listWrap').innerHTML='<p class="hint">No shipments yet. Add one above.</p>'; return; }
+    var h='<table><thead><tr><th>Tracking #</th><th>Status</th><th>Route</th><th></th></tr></thead><tbody>';
+    keys.forEach(function(k){
+      var s=state.data[k];
+      h+='<tr><td><b>'+esc(k)+'</b></td>'+
+         '<td><span class="pill '+pillClass(s.status)+'">'+esc(s.status||'')+'</span></td>'+
+         '<td class="hint">'+esc(s.from||'')+' → '+esc(s.to||'')+'</td>'+
+         '<td style="text-align:right;white-space:nowrap">'+
+           '<button class="mini" onclick="editShipment(\''+esc(k).replace(/\\'/g,"")+'\')">Edit</button> '+
+           '<button class="mini" onclick="deleteShipment(\''+esc(k).replace(/\\'/g,"")+'\')">Delete</button>'+
+         '</td></tr>';
+    });
+    h+='</tbody></table>';
+    document.getElementById('listWrap').innerHTML=h;
+  }
+
+  /* ---------------- Form <-> data ---------------- */
+  function eventsToText(events){ return (events||[]).map(function(e){ return [e.title,e.time,e.place].filter(function(x){return x!=null&&x!=='';}).join(' | '); }).join('\n'); }
+  function textToEvents(txt){
+    return (txt||'').split(/\r?\n/).map(function(l){return l.trim();}).filter(Boolean).map(function(l){
+      var p=l.split('|').map(function(x){return x.trim();});
+      return { title:p[0]||'', time:p[1]||'', place:p[2]||'', done:true };
+    });
+  }
+  function clearForm(){
+    state.editingKey=null;
+    document.getElementById('formTitle').textContent='Add a shipment';
+    ['f_num','f_service','f_eta','f_delivered','f_from','f_to','f_events'].forEach(function(id){document.getElementById(id).value='';});
+    document.getElementById('f_status').value='In Transit';
+    document.getElementById('f_num').removeAttribute('readonly');
+  }
+  function editShipment(k){
+    var s=state.data[k]; if(!s) return;
+    state.editingKey=k;
+    document.getElementById('formTitle').textContent='Edit '+k;
+    document.getElementById('f_num').value=k;
+    document.getElementById('f_status').value=s.status||'In Transit';
+    document.getElementById('f_service').value=s.service||'';
+    document.getElementById('f_eta').value=s.eta||'';
+    document.getElementById('f_delivered').value=s.deliveredOn||'';
+    document.getElementById('f_from').value=s.from||'';
+    document.getElementById('f_to').value=s.to||'';
+    document.getElementById('f_events').value=eventsToText(s.events);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  async function saveShipment(){
+    var num = document.getElementById('f_num').value.trim().toUpperCase().replace(/\s+/g,'');
+    if(!num){ appMsg('err','Tracking number is required.'); return; }
+    var obj = {
+      status: document.getElementById('f_status').value,
+      service: document.getElementById('f_service').value.trim(),
+      eta: document.getElementById('f_eta').value.trim(),
+      from: document.getElementById('f_from').value.trim(),
+      to: document.getElementById('f_to').value.trim(),
+      events: textToEvents(document.getElementById('f_events').value)
+    };
+    var dv = document.getElementById('f_delivered').value.trim();
+    if(dv) obj.deliveredOn = dv;
+
+    var btn=document.getElementById('saveBtn'); btn.disabled=true;
+    appMsg('work','Saving to your site… (live in ~1 minute)');
+    try{
+      // refresh sha to avoid conflicts
+      var fresh = await ghLoad(); state.data=fresh.data; state.sha=fresh.sha;
+      if(state.editingKey && state.editingKey!==num){ delete state.data[state.editingKey]; }
+      state.data[num]=obj;
+      await ghSave(state.data, (state.editingKey?'Update':'Add')+' shipment '+num+' via admin');
+      renderList(); clearForm();
+      appMsg('ok','✅ Saved '+num+'. Your site will show it within ~1 minute (hard-refresh to see it).');
+    }catch(e){ appMsg('err', e.message); }
+    finally{ btn.disabled=false; }
+  }
+
+  async function deleteShipment(k){
+    if(!confirm('Delete shipment '+k+'? This removes it from your live site.')) return;
+    appMsg('work','Deleting…');
+    try{
+      var fresh = await ghLoad(); state.data=fresh.data; state.sha=fresh.sha;
+      delete state.data[k];
+      await ghSave(state.data, 'Delete shipment '+k+' via admin');
+      renderList();
+      appMsg('ok','Deleted '+k+'.');
+    }catch(e){ appMsg('err', e.message); }
+  }
+
+  boot();
+</script>
+</body>
+</html>
