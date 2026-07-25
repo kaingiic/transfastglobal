@@ -171,13 +171,19 @@
     "to": "67 Joycelyn AveSurrey Downs SA 5126 Australia",
     "events": [
       {
-        "title": "Label created July 25 2026 [ Shipper]",
+        "title": "Label created July 25, 2026 [ Shipper]",
         "time": "",
         "place": "",
         "done": true
       },
       {
-        "title": "In Transit July 25 2026 [ Los Angeles CA]",
+        "title": "picked up",
+        "time": "Jul 25, 2026 6:40 PM",
+        "place": "Los Angeles, CA",
+        "done": true
+      },
+      {
+        "title": "In Transit July 25, 2026 [ Los Angeles CA]",
         "time": "",
         "place": "",
         "done": true
