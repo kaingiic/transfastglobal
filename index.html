@@ -244,6 +244,7 @@
   .badge{display:inline-block;background:rgba(255,102,0,.15);color:var(--orange);padding:5px 12px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:18px}
   .badge.delivered{background:rgba(46,204,113,.15);color:#2ecc71}
   .badge.exception{background:rgba(231,76,60,.15);color:#e74c3c}
+  .badge.onhold{background:rgba(255,180,0,.15);color:#ffb400}
   .track-head-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
   .track-head-row .badge{margin-bottom:0}
   .eta-line{color:var(--text-dim);font-size:14px;font-weight:600}
@@ -936,8 +937,9 @@
     }
     var status = s.status || 'In Transit';
     var isDelivered = /deliver/i.test(status);
-    var isException = /(exception|held|delay|failed)/i.test(status);
-    var cls = isDelivered ? 'delivered' : (isException ? 'exception' : '');
+    var isException = /(exception|delay|failed)/i.test(status);
+    var isHold = /hold/i.test(status);
+    var cls = isDelivered ? 'delivered' : (isException ? 'exception' : (isHold ? 'onhold' : ''));
     var etaText = isDelivered
       ? (L.lblDelivered + ' ' + (s.deliveredOn || s.eta || ''))
       : (L.lblEta + ' ' + (s.eta || '—'));

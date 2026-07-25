@@ -44,6 +44,7 @@
   .pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;background:rgba(255,102,0,.15);color:var(--orange)}
   .pill.delivered{background:rgba(46,204,113,.15);color:#2ecc71}
   .pill.exception{background:rgba(231,76,60,.15);color:#e74c3c}
+  .pill.onhold{background:rgba(255,180,0,.15);color:#ffb400}
   .mini{background:transparent;border:1px solid var(--b);color:var(--t);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}
   .mini:hover{border-color:var(--orange)}
   .hidden{display:none !important}
@@ -132,6 +133,7 @@
           <select id="f_status">
             <option>Label Created</option>
             <option selected>In Transit</option>
+            <option>On Hold</option>
             <option>Out for Delivery</option>
             <option>Delivered</option>
             <option>Exception</option>
@@ -256,7 +258,7 @@ Label created | Jul 22, 10:02 AM | Shipper"></textarea>
       var res = await ghLoad(); state.data=res.data; state.sha=res.sha; renderList();
     }catch(e){ document.getElementById('listWrap').innerHTML=''; appMsg('err', e.message); }
   }
-  function pillClass(s){ s=(s||'').toLowerCase(); if(s.indexOf('deliver')>-1) return 'delivered'; if(/(exception|held|delay|failed)/.test(s)) return 'exception'; return ''; }
+  function pillClass(s){ s=(s||'').toLowerCase(); if(s.indexOf('deliver')>-1) return 'delivered'; if(/(exception|delay|failed)/.test(s)) return 'exception'; if(s.indexOf('hold')>-1) return 'onhold'; return ''; }
   function esc(x){ var d=document.createElement('div'); d.textContent=(x==null?'':x); return d.innerHTML; }
   function renderList(){
     var keys = Object.keys(state.data);
