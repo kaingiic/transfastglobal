@@ -163,7 +163,7 @@
   },
   "TFG7652276": {
     "status": "In Transit",
-    "service": "ground shipping",
+    "service": "Air shipping",
     "eta": "July 28 2026",
     "shipper": "Grace williams",
     "recipient": "MRS Banie",
@@ -171,7 +171,13 @@
     "to": "67 Joycelyn AveSurrey Downs SA 5126 Australia",
     "events": [
       {
-        "title": "label created July 25 2026",
+        "title": "Label created July 25 2026",
+        "time": "",
+        "place": "",
+        "done": true
+      },
+      {
+        "title": "In Transit July 25 2026",
         "time": "",
         "place": "",
         "done": true
